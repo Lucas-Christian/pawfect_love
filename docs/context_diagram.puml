@@ -1,0 +1,15 @@
+@startuml PawfectLove
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(user, Usuário, "Um usuário qualquer")
+
+System(website, Pawfect Love, "Website que os usuários irão acessar")
+System(api, API, "Interface que interage com o banco de dados")
+
+SystemDb(database, Banco de dados, "Armazena informações dos usuários e dos cachorrinhos")
+
+Rel(user, website, "Acessa o")
+Rel(website, api, "Faz chamadas de API para")
+Rel(api, database, "Lê e escreve em")
+
+@enduml

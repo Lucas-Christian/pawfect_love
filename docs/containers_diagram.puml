@@ -1,0 +1,27 @@
+@startuml Pawfect Love
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.4.0
+!include ICONURL/devicons2/nextjs_original.puml
+!include ICONURL/devicons2/express_original.puml
+!include ICONURL/devicons/sqllite.puml
+
+Person(visitor, "Visitante", "Qualquer um que entra no site")
+Person(user, "Usuário", "Qualquer um que faz login no site")
+Person(admin, "Admin", "Conta com permissões administrativas")
+
+System_Boundary(website, "Pawfect Love") {
+  Container(frontend, "Website", "Next.js", "A parte visual de toda a aplicação, com a qual todos os diferentes tipos de usuários interagem", $sprite="nextjs_original")
+  Container(api, "API RESTFul", "Express","Faz manipulações no banco de dados", $sprite="express_original")
+  
+  ContainerDb(database, "Banco de Dados", "SQLite", "Armazena informações dos usuários, e cachorrinhos", $sprite="sqllite")
+  
+  Rel(visitor, frontend, "Visualiza cachorrinhos", "HTTPS")
+  Rel(user, frontend, "Visualiza cachorrinhos e curti eles", "HTTPS")
+  Rel(admin, frontend, "Visualiza, edita, deleta, adiciona cachorrinhos, e curti eles", "HTTPS")
+
+  Rel(frontend, api, "Faz chamadas de api para", "JSON/HTTPS")
+  
+  Rel(api, database, "Lê e escreve no banco de dados", "Prisma")
+}
+
+@enduml
