@@ -27,7 +27,7 @@ export class Server {
   }
   private static routes(): void {
     routes.map(({ method, path, handler }: Route) => 
-      Server.instance[method](path, handler.bind(null, handler.arguments[0], handler.arguments[1], { db: Server.db }))
+      Server.instance[method](path, (req, res) => handler(req, res, { db: Server.db }))
     );
   }
   public get instance(): Application {

@@ -1,6 +1,13 @@
-import type { Prisma } from "@prisma/client";
+import type { Admin, Dog, Like, Prisma, User } from "@prisma/client";
 
 export type ModelType = "user" | "dog" | "like" | "admin";
+
+export type ModelTypeData<T extends ModelType> = 
+  T extends "user" ? Prisma.Prisma__UserClient<User | null, null>:
+  T extends "dog" ? Prisma.Prisma__DogClient<Dog, null> :
+  T extends "like" ? Prisma.Prisma__LikeClient<Like, null> :
+  T extends "admin" ? Prisma.Prisma__AdminClient<Admin, null> :
+  never;
 
 export type CreateArgs<T extends ModelType> =
   T extends "user" ? Prisma.UserCreateArgs :
