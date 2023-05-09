@@ -1,5 +1,6 @@
 import { RouteFactory } from "./routeFactory";
 import { deleteRoute } from "./deleteRoute";
+import { getAllRoute } from "./getAllRoute";
 import { patchRoute } from "./patchRoute";
 import { postRoute } from "./postRoute";
 import { getRoute } from "./getRoute";
@@ -8,7 +9,20 @@ import { putRoute } from "./putRoute";
 export const routes = [
   RouteFactory.createDeleteRoute("/user", deleteRoute),
   RouteFactory.createPatchRoute("/user", patchRoute),
+  RouteFactory.createGetRoute("/user/:user_id", getRoute),
+  RouteFactory.createGetRoute("/user", getAllRoute),
   RouteFactory.createPostRoute("/user", postRoute),
-  RouteFactory.createGetRoute("/user", getRoute),
-  RouteFactory.createPutRoute("/user", putRoute)
+  RouteFactory.createPutRoute("/user", putRoute),
+  RouteFactory.createDeleteRoute("/dog", deleteRoute),
+  RouteFactory.createPatchRoute("/dog", patchRoute),
+  RouteFactory.createGetRoute("/dog/:dog_id", getRoute),
+  RouteFactory.createGetRoute("/dog", getAllRoute),
+  RouteFactory.createPostRoute("/dog", postRoute),
+  RouteFactory.createPutRoute("/dog", putRoute),
+  RouteFactory.createDeleteRoute("/like", deleteRoute),
+  RouteFactory.createPatchRoute("/like", patchRoute),
+  RouteFactory.createGetRoute("/like/:user_id/:dog_id", getRoute),
+  RouteFactory.createGetRoute("/like", getAllRoute),
+  RouteFactory.createPostRoute("/like", postRoute),
+  RouteFactory.createPutRoute("/like", putRoute),
 ]
