@@ -42,4 +42,6 @@ model Like {
 
   dog_id    Int
   dog       Dog      @relation(fields: [dog_id], references: [dog_id])
+
+  @@unique([user_id, dog_id])
 }

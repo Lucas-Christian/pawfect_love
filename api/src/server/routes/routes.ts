@@ -1,10 +1,10 @@
 import { RouteFactory } from "./routeFactory";
-import { deleteRoute } from "./deleteRoute";
-import { getAllRoute } from "./getAllRoute";
-import { patchRoute } from "./patchRoute";
-import { postRoute } from "./postRoute";
-import { getRoute } from "./getRoute";
-import { putRoute } from "./putRoute";
+import { deleteRoute } from "./delete/deleteRoute";
+import { getAllRoute } from "./getAll/getAllRoute";
+import { patchRoute } from "./patch/patchRoute";
+import { postRoute } from "./post/postRoute";
+import { getRoute } from "./get/getRoute";
+import { putRoute } from "./put/putRoute";
 
 export const routes = [
   RouteFactory.createDeleteRoute("/user", deleteRoute),

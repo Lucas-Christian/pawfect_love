@@ -8,13 +8,15 @@
     "build": "tsc",
     "start": "node ./dist/index.js",
     "test": "vitest",
-    "coverage": "vitest --coverage"
+    "coverage": "vitest --coverage",
+    "generate": "prisma generate",
+    "db:push": "prisma db push"
   },
   "license": "MIT",
   "devDependencies": {
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
-    "@types/node": "^20.1.1",
+    "@types/node": "^20.1.2",
     "@vitest/coverage-c8": "^0.31.0",
     "prisma": "^4.14.0",
     "tsx": "^3.12.7",
