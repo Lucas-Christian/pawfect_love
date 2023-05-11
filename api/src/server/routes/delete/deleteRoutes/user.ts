@@ -9,16 +9,16 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
         user_id: userId
       }
     });
-    if(user === null || !user) return res.json({ status: 404, message: "Este usuário não existe no banco de dados"});
+    if(user === null || !user) return res.json({ status: 404, message: "Usuário não encontrado." });
 
     await db.delete("user", {
       where: {
         user_id: userId
       }
     });
+    res.json({ status: 204, message: `Sucesso ao deletar o usuário do banco de dados.` });
   } catch(err) {
     console.log(err);
-    return res.json({ status: 500, message: "Não foi possível deletar o usuário do banco de dados", error: err });
+    return res.json({ status: 500, message: "Não foi deletar o usuário do banco de dados.", error: err });
   }
-  res.json({ status: 204, message: `Sucesso ao deletar o usuário do banco de dados.` });
 }

@@ -1,9 +1,11 @@
+import { adminRoute } from "./admin";
 import { userRoute } from "./user";
-import { dogRoute } from "./dog";
 import { likeRoute } from "./like";
+import { dogRoute } from "./dog";
 
 export const getAllRoutes = {
   "user": userRoute,
   "dog": dogRoute,
-  "like": likeRoute
+  "like": likeRoute,
+  "admin": adminRoute
 }

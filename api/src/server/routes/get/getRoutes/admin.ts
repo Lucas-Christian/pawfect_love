@@ -1,0 +1,17 @@
+import type { Request, Response } from "express";
+import type { Dependencies } from "../../../../types/Dependencies";
+
+export async function adminRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
+  let userId = parseInt(req.params["user_id"]!);
+  try {
+    let user = await db.findUnique("admin", {
+      where: {
+        user_id: userId
+      }
+    });
+    if(user === null || !user) return res.json({ status: 404, message: "Admin não encontrado." });
+    res.json({ status: 200, body: user });
+  } catch(err) {
+    return res.json({ status: 500, message: "Não foi possível encontrar o admin no banco de dados", error: err });
+  }
+}

@@ -20,9 +20,11 @@ export const routes = [
   RouteFactory.createPostRoute("/dog", postRoute),
   RouteFactory.createPutRoute("/dog", putRoute),
   RouteFactory.createDeleteRoute("/like", deleteRoute),
-  RouteFactory.createPatchRoute("/like", patchRoute),
   RouteFactory.createGetRoute("/like/:user_id/:dog_id", getRoute),
   RouteFactory.createGetRoute("/like", getAllRoute),
   RouteFactory.createPostRoute("/like", postRoute),
-  RouteFactory.createPutRoute("/like", putRoute),
+  RouteFactory.createDeleteRoute("/admin", deleteRoute),
+  RouteFactory.createGetRoute("/admin/:user_id", getRoute),
+  RouteFactory.createGetRoute("/admin", getAllRoute),
+  RouteFactory.createPostRoute("/admin", postRoute)
 ]
