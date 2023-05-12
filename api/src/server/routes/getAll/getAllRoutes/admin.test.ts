@@ -9,40 +9,45 @@ import { adminRoute } from "./admin";
 let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
 
 beforeAll(() => {
-  req = createMockedRequest(undefined, {
-    user_id: "1"
-  });
+  req = createMockedRequest();
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
-  dbWithError.create.mockRejectedValueOnce(new Error("Erro ao criar o administrador no banco de dados."));
+  dbWithError.findMany.mockRejectedValueOnce(new Error("Erro ao buscar os administradores no banco de dados."));
 });
 
 afterAll(() => {
   vi.clearAllMocks();
 });
 
-describe("Verifica se o método POST da rota admin funciona corretamente", () => {
-  test("É esperado que o admin seja criado no banco de dados com sucesso (201)", async () => {
+describe("Verifica se o método GET da rota admin funciona corretamente", () => {
+  test("É esperado que os admins sejam encontrados com sucesso (200)", async () => {
+    const admins = [{
+      admin_id: 1,
+      user_id: 1,
+      dog_id: 1
+    }];
+    db.findMany.mockReturnValueOnce(admins).mockReturnValueOnce(null);
+
     await adminRoute(req as any, res as any, { db: db } as any);
+
     expect(res.json).toHaveBeenCalledWith({
-      status: 201,
-      message: "Sucesso ao criar o administrador no banco de dados.",
+      status: 200,
+      body: admins,
     });
   });
-  test("É esperado um erro de conflito (409)", async () => {
-    db.findUnique.mockReturnValueOnce({ id: 1, name: "John" }).mockReturnValueOnce(null);
+  test("É esperado que os admins não sejam encontrados (404)", async () => {
     await adminRoute(req as any, res as any, { db: db } as any);
     expect(res.json).toHaveBeenCalledWith({
-      status: 409,
-      message: "Admin já existe no banco de dados.",
+      status: 404,
+      message: "Não existem admins no banco de dados.",
     });
   });
   test("É esperado um erro interno (500)", async () => {
     await adminRoute(req as any, res as any, { db: dbWithError } as any);
     expect(res.json).toHaveBeenCalledWith({
       status: 500,
-      message: "Não foi possível criar o administrador no banco de dados.",
+      message: "Erro ao tentar buscar pelos admins.",
       error: expect.any(Error)
     });
   });

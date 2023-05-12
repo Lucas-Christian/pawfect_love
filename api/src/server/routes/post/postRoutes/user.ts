@@ -22,6 +22,6 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
     res.json({ status: 201, message: `Sucesso ao criar o ${userName} no banco de dados.` });
     
   } catch(err) {
-    return res.json({ status: 500, message: "Não foi possível criar o usuário no banco de dados", error: err });
+    return res.json({ status: 500, message: "Não foi possível criar o usuário no banco de dados.", error: err });
   }
 }
