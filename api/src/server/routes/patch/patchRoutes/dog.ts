@@ -28,7 +28,6 @@ export async function dogRoute(req: Request, res: Response, { db }: Dependencies
 
     res.json({ status: 200, message: `Sucesso ao atualizar o cachorro no banco de dados.` });
   } catch(err) {
-    console.log(err);
-    return res.json({ status: 500, message: "Não foi possível atualizar o cachorro no banco de dados", error: err });
+    return res.json({ status: 500, message: "Não foi possível atualizar o cachorro no banco de dados.", error: err });
   }
 }

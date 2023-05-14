@@ -26,22 +26,22 @@ beforeAll(() => {
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
-  dbWithError.findUnique.mockRejectedValueOnce(new Error("Erro ao buscar pelo usuário no banco de dados."));
+  dbWithError.delete.mockRejectedValueOnce(new Error("Erro ao tentar deletar o administrador do banco de dados."));
 });
 
 afterAll(() => {
   vi.clearAllMocks();
 });
 
-describe("Verifica se o método GET da rota like funciona corretamente", () => {
-  test("É esperado que o like seja encontrado com sucesso (200)", async () => {
+describe("Verifica se o método DELETE da rota like funciona corretamente", () => {
+  test("É esperado que o Like seja deletado com sucesso (204)", async () => {
     db.findUnique.mockReturnValueOnce(user).mockReturnValueOnce(dog).mockReturnValueOnce(like);
 
     await likeRoute(req as any, res as any, { db: db } as any);
 
     expect(res.json).toHaveBeenCalledWith({
-      status: 200,
-      body: like,
+      status: 204,
+      message: "Sucesso ao deletar o like do banco de dados.",
     });
   });
   test("É esperado que o usuário não seja encontrado (404)", async () => {
@@ -69,10 +69,12 @@ describe("Verifica se o método GET da rota like funciona corretamente", () => {
     });
   });
   test("É esperado um erro interno (500)", async () => {
+    dbWithError.findUnique.mockReturnValueOnce(user).mockReturnValueOnce(dog).mockReturnValueOnce(like);
+
     await likeRoute(req as any, res as any, { db: dbWithError } as any);
     expect(res.json).toHaveBeenCalledWith({
       status: 500,
-      message: "Não foi possível encontrar o like no banco de dados.",
+      message: "Não foi possível deletar o like do banco de dados.",
       error: expect.any(Error)
     });
   });

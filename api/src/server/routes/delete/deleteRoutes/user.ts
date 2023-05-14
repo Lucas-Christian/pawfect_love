@@ -4,7 +4,7 @@ import type { Dependencies } from "../../../../types/Dependencies";
 export async function userRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   let userId = parseInt(req.params["user_id"]!);
   try {
-    let user = await db.findUnique("user", {
+    const user = await db.findUnique("user", {
       where: {
         user_id: userId
       }
@@ -18,7 +18,6 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
     });
     res.json({ status: 204, message: `Sucesso ao deletar o usuário do banco de dados.` });
   } catch(err) {
-    console.log(err);
-    return res.json({ status: 500, message: "Não foi deletar o usuário do banco de dados.", error: err });
+    return res.json({ status: 500, message: "Não foi possível deletar o usuário do banco de dados.", error: err });
   }
 }

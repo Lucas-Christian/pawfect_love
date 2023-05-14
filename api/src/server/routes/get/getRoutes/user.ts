@@ -12,6 +12,6 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
     if(user === null || !user) return res.json({ status: 404, message: "Usuário não encontrado." });
     res.json({ status: 200, body: user });
   } catch(err) {
-    return res.json({ status: 500, message: "Não foi encontrar o usuário no banco de dados.", error: err });
+    return res.json({ status: 500, message: "Não foi possível encontrar o usuário no banco de dados.", error: err });
   }
 }

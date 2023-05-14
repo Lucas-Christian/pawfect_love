@@ -13,10 +13,11 @@ export async function dogRoute(req: Request, res: Response, { db }: Dependencies
     });
     
     if(!existingDog) {
-      if(!dogName || !dogImage) return res.json({ status: 404, message: "Não foi possível criar esse cachorro no banco de dados." });
+      if(!dogName || !dogImage) return res.json({ status: 400, message: "Você não forceu dados o suficiente para criar esse cachorro no banco de dados." });
       data["name"] = dogName;
       data["image"] = dogImage;
     } else {
+      if(!dogName && !dogImage) return res.json({ status: 400, message: "Você não forneceu um nome, ou imagem do cachorro para ser atualizada." });
       if(dogImage && existingDog["image_url"] !== dogImage) data["image"] = dogImage;
       if(dogName && existingDog["name"] !== dogName) data["name"] = dogName;
       if(!data["name"] && !data["image"]) return res.json({ status: 409, message: "Os dados para serem atualizados já são exatamente iguais aos do cachorro." });
@@ -35,7 +36,6 @@ export async function dogRoute(req: Request, res: Response, { db }: Dependencies
 
     res.json({ status: 200, message: `Sucesso ao atualizar o cachorro no banco de dados.` });
   } catch(err) {
-    console.log(err);
-    return res.json({ status: 500, message: "Não foi possível atualizar o cachorro no banco de dados", error: err });
+    return res.json({ status: 500, message: "Não foi possível atualizar ou criar o cachorro no banco de dados.", error: err });
   }
 }

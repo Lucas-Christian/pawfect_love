@@ -3,17 +3,17 @@ import type { Prisma } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 
 export class Database {
-  private static _instance: Database;
+  private static instance: Database;
   private prisma: PrismaClient<Prisma.PrismaClientOptions, never, Prisma.RejectOnNotFound | Prisma.RejectPerOperation | undefined>;
   
   constructor() {
     this.prisma = new PrismaClient();
   }
   public get instance(): Database {
-    if (!Database._instance) {
-      Database._instance = new Database();
+    if (!Database.instance) {
+      Database.instance = new Database();
     }
-    return Database._instance;
+    return Database.instance;
   }
 
   public async create<T extends ModelType>(model: T, args: CreateArgs<T>): Promise<ModelTypeData<T>>{

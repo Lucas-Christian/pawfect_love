@@ -16,8 +16,8 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
     
     if(!existingUser) return res.json({ status: 404, message: "Esse usuário não existe." });
     if(userEmail && existingUser["email"] !== userEmail) data["email"] = userEmail;
-    if(userName && existingUser["name"] !== userEmail) data["name"] = userName;
-    if(!data["name"] && !data["email"]) return res.json({ status: 409, message: "Os dados para serem atualizados já são exatamente iguais aos do usuários." });
+    if(userName && existingUser["name"] !== userName) data["name"] = userName;
+    if(!data["name"] && !data["email"]) return res.json({ status: 409, message: "Os dados para serem atualizados já são exatamente iguais aos do usuário." });
 
     await db.update("user", {
       where: {
@@ -28,7 +28,6 @@ export async function userRoute(req: Request, res: Response, { db }: Dependencie
 
     res.json({ status: 200, message: `Sucesso ao atualizar o usuário no banco de dados.` });
   } catch(err) {
-    console.log(err);
-    return res.json({ status: 500, message: "Não foi possível atualizar o usuário no banco de dados", error: err });
+    return res.json({ status: 500, message: "Não foi possível atualizar o usuário no banco de dados.", error: err });
   }
 }

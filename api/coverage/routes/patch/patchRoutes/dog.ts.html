@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for routes/post/postRoutes/admin.ts</title>
+    <title>Code coverage report for routes/patch/patchRoutes/dog.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">routes/post/postRoutes</a> admin.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">routes/patch/patchRoutes</a> dog.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>33/33</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>33/33</span>
             </div>
         
             
@@ -86,51 +86,78 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span></td><td class="text"><pre class="prettyprint lang-js">import type { Request, Response } from "express";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">5x</span></td><td class="text"><pre class="prettyprint lang-js">import type { Request, Response } from "express";
 import type { Dependencies } from "../../../../types/Dependencies";
 &nbsp;
-export async function adminRoute(req: Request, res: Response, { db }: Dependencies): Promise&lt;void | Response&gt; {
-  let userId = parseInt(req.params["user_id"]!);
+export async function dogRoute(req: Request, res: Response, { db }: Dependencies): Promise&lt;void | Response&gt; {
+  let dogId = parseInt(req.params["dog_id"]!), dogName = req.body["name"]!, dogImage = req.body["image"]!;
+  if(!dogName &amp;&amp; !dogImage) return res.json({ status: 400, message: "Você não forneceu um nome, ou imagem do cachorro para ser atualizada." });
+&nbsp;
+  let data: { name?: string; image?: string; } = {};
 &nbsp;
   try {
-    const admin = await db.findUnique("admin", {
+    const existingDog = await db.findUnique("dog", {
       where: {
-        user_id: userId
+        dog_id: dogId
       }
     });
-    if(admin) return res.json({ status: 409, message: "Admin já existe no banco de dados." });
+    if(!existingDog) return res.json({ status: 404, message: "Esse cachorro não existe." });
 &nbsp;
-    await db.create("admin", {
-      data: {
-        user_id: userId
-      }
+    if(dogImage &amp;&amp; existingDog["image_url"] !== dogImage) data["image"] = dogImage;
+    if(dogName &amp;&amp; existingDog["name"] !== dogName) data["name"] = dogName;
+    if(!data["name"] &amp;&amp; !data["image"]) return res.json({ status: 409, message: "Os dados para serem atualizados já são exatamente iguais aos do cachorro." });
+&nbsp;
+    await db.update("dog", {
+      where: {
+        dog_id: dogId
+      },
+      data: data
     });
-    res.json({ status: 201, message: `Sucesso ao criar o administrador no banco de dados.` });
+&nbsp;
+    res.json({ status: 200, message: `Sucesso ao atualizar o cachorro no banco de dados.` });
   } catch(err) {
-    return res.json({ status: 500, message: "Não foi possível criar o administrador no banco de dados.", error: err });
+    return res.json({ status: 500, message: "Não foi possível atualizar o cachorro no banco de dados.", error: err });
   }
 }</pre></td></tr></table></pre>
 

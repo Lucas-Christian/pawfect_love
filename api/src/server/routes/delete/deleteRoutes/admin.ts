@@ -4,7 +4,7 @@ import type { Dependencies } from "../../../../types/Dependencies";
 export async function adminRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   let userId = parseInt(req.params["user_id"]!);
   try {
-    let admin = await db.findUnique("admin", {
+    const admin = await db.findUnique("admin", {
       where: {
         user_id: userId
       }
@@ -18,7 +18,6 @@ export async function adminRoute(req: Request, res: Response, { db }: Dependenci
     });
     res.json({ status: 204, message: `Sucesso ao deletar o admin do banco de dados.` });
   } catch(err) {
-    console.log(err);
-    return res.json({ status: 500, message: "Não foi deletar o admin do banco de dados.", error: err });
+    return res.json({ status: 500, message: "Não foi possível deletar o admin do banco de dados.", error: err });
   }
 }

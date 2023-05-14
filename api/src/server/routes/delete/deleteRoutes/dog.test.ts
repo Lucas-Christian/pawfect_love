@@ -4,19 +4,16 @@ import { createMockedResponse } from "../../../mock/createMockedResponse";
 import { createMockedRequest } from "../../../mock/createMockedRequest";
 import { Request, Response } from "express";
 import { MockedDatabase } from "../../../mock/types/MockedDatabase";
-import { adminRoute } from "./admin";
+import { dogRoute } from "./dog";
 
 let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
-const user = {
-  user_id: 1, 
-  name: "Paulinho", 
-  email: "dog@gmail.com"
-}
-
+const dog = { 
+  dog_id: 1, 
+  name: "Cleitinho", 
+  image_url: "https://adawdas/adwdaw.png" 
+};
 beforeAll(() => {
-  req = createMockedRequest(undefined, {
-    user_id: "1"
-  });
+  req = createMockedRequest(undefined, { dog_id: "1" });
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
@@ -27,31 +24,31 @@ afterAll(() => {
   vi.clearAllMocks();
 });
 
-describe("Verifica se o método DELETE da rota admin funciona corretamente", () => {
-  test("É esperado que o admin seja deletado com sucesso (204)", async () => {
-    db.findUnique.mockReturnValueOnce(user).mockReturnValueOnce(null);
+describe("Verifica se o método DELETE da rota dog funciona corretamente", () => {
+  test("É esperado que o dog seja deletado com sucesso (204)", async () => {
+    db.findUnique.mockReturnValueOnce(dog).mockReturnValueOnce(null);
 
-    await adminRoute(req as any, res as any, { db: db } as any);
+    await dogRoute(req as any, res as any, { db: db } as any);
 
     expect(res.json).toHaveBeenCalledWith({
       status: 204,
-      message: "Sucesso ao deletar o admin do banco de dados.",
+      message: "Sucesso ao deletar o cachorro do banco de dados.",
     });
   });
-  test("É esperado que o admin não seja encontrado (404)", async () => {
-    await adminRoute(req as any, res as any, { db: db } as any);
+  test("É esperado que o cachorro não seja encontrado (404)", async () => {
+    await dogRoute(req as any, res as any, { db: db } as any);
     expect(res.json).toHaveBeenCalledWith({
       status: 404,
-      message: "Admin não encontrado.",
+      message: "Cachorro não encontrado.",
     });
   });
   test("É esperado um erro interno (500)", async () => {
-    dbWithError.findUnique.mockReturnValueOnce(user).mockReturnValueOnce(null);
-
-    await adminRoute(req as any, res as any, { db: dbWithError } as any);
+    dbWithError.findUnique.mockReturnValueOnce(dog).mockReturnValueOnce(null);
+    
+    await dogRoute(req as any, res as any, { db: dbWithError } as any);
     expect(res.json).toHaveBeenCalledWith({
       status: 500,
-      message: "Não foi possível deletar o admin do banco de dados.",
+      message: "Não foi possível deletar o cachorro do banco de dados.",
       error: expect.any(Error)
     });
   });
