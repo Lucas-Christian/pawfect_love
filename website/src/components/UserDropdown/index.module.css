@@ -1,0 +1,17 @@
+.user_dropdown {
+  background-color: #FFFFFF;
+  border: 2px #000000 solid;
+  position: absolute;
+  z-index: 9999;
+  width: 100vw;
+  bottom: 70px;
+  left: 0;
+}
+.user_dropdown_item {
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  width: 100vw;
+  gap: 10px;
+}
