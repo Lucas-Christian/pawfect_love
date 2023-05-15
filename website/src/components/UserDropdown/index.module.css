@@ -1,6 +1,4 @@
 .user_dropdown {
-  background-color: #FFFFFF;
-  border: 2px #000000 solid;
   position: absolute;
   z-index: 9999;
   width: 100vw;
@@ -8,10 +6,24 @@
   left: 0;
 }
 .user_dropdown_item {
+  background-color: #FFFFFF;
+  border: 2px #000000 solid;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   display: flex;
-  width: 100vw;
+  width: 100%;
   gap: 10px;
+}
+
+@media (min-width: 640px) {
+  .user_dropdown {
+    right: 10px;
+    left: auto;
+    top: 70px;
+    width: 10vw;
+  }
+  .user_dropdown_item {
+    border-radius: 8px;
+  }
 }

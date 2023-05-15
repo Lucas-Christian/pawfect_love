@@ -1,5 +1,4 @@
-import type { Application } from "express";
-import type { Route } from "./routes/routeFactory";
+import type { Application, Request, Response } from "express";
 import { Database } from "./database";
 import { routes } from "./routes/routes";
 import * as dotenv from "dotenv";
@@ -22,13 +21,21 @@ export class Server {
   private static config(): void {
     Server.instance.use(helmet());
     Server.instance.use(cors());
+    Server.instance.use(express.urlencoded({ extended: true }));
     Server.instance.use(express.json());
     Server.instance.disable("x-powered-by");
   }
   private static routes(): void {
-    routes.map(({ method, path, handler }: Route) => 
-      Server.instance[method](path, (req, res) => handler(req, res, { db: Server.db }))
-    );
+    routes.forEach(({ method, path, handler }) => {
+      Server.instance[method](path, async (req: Request, res: Response) => {
+        try {
+          await handler(req, res, { db: Server.db });
+        } catch (error) {
+          console.error(error);
+          res.json({ status: 500, message: "Erro interno do servidor." });
+        }
+      });
+    });
   }
   public get instance(): Application {
     if(!Server.instance) Server.instance = new Server().instance;

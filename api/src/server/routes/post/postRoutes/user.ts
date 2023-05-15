@@ -3,6 +3,7 @@ import type { Dependencies } from "../../../../types/Dependencies";
 
 export async function userRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   let userName = req.body["name"]!, userEmail = req.body["email"]!;
+  
   if(!userName || !userEmail) return res.json({ status: 400, message: "O nome ou o e-mail do usuário não foi fornecido." });
   try {
     const existingUser = await db.findUnique("user", {

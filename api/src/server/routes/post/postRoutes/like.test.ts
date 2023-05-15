@@ -11,7 +11,8 @@ let req: Partial<Request>, malformedReq: Partial<Request>, res: Partial<Response
 beforeAll(() => {
   req = createMockedRequest(undefined, {
     user_id: "1",
-    dog_id: "1"
+    dog_id: "1",
+    authorization: process.env["AUTHORIZATION_KEY"] as string
   });
   res = createMockedResponse();
   db = createMockedDatabase();

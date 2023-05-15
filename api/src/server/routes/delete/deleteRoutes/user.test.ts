@@ -15,7 +15,8 @@ const user = {
 
 beforeAll(() => {
   req = createMockedRequest(undefined, {
-    user_id: "1"
+    user_id: "1",
+    authorization: process.env["AUTHORIZATION_KEY"] as string
   });
   res = createMockedResponse();
   db = createMockedDatabase();

@@ -4,7 +4,7 @@ import type { Dependencies } from "../../types/Dependencies";
 export interface Route {
   path: string;
   method: "get" | "post" | "delete" | "patch" | "put";
-  handler: (req: Request, res: Response, dependencies: Dependencies) => void;
+  handler: (req: Request, res: Response, dependencies: Dependencies) => Promise<void | Response>;
 }
 
 export class RouteFactory {

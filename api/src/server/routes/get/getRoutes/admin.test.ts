@@ -10,7 +10,8 @@ let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithErr
 
 beforeAll(() => {
   req = createMockedRequest(undefined, {
-    user_id: "1"
+    user_id: "1",
+    authorization: process.env["AUTHORIZATION_KEY"] as string
   });
   res = createMockedResponse();
   db = createMockedDatabase();

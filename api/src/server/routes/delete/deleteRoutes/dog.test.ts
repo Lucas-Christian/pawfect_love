@@ -13,7 +13,10 @@ const dog = {
   image_url: "https://adawdas/adwdaw.png" 
 };
 beforeAll(() => {
-  req = createMockedRequest(undefined, { dog_id: "1" });
+  req = createMockedRequest(undefined, { 
+    dog_id: "1",
+    authorization: process.env["AUTHORIZATION_KEY"] as string 
+  });
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

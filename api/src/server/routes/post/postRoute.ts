@@ -11,7 +11,7 @@ export async function postRoute(req: Request, res: Response, { db }: Dependencie
     const routeName = req.originalUrl.split("/")[1];
 
     let route = postRoutes[routeName as keyof typeof postRoutes];
-    route(req, res, { db });
+    return await route(req, res, { db });
   } catch(err) {
     console.log(err);
     return res.json({ status: 500, message: "Erro", error: err });

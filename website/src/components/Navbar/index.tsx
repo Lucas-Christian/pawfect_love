@@ -50,7 +50,7 @@ export function Navbar(): React.JSX.Element {
     return (
       <nav>
         <Home />
-        { session.user?.email === "lucas.christian.programmer@gmail.com" ? <CreateIcon /> : null }
+        { session.isAdmin ? <CreateIcon /> : null }
         <UserIcon />
         { userDropdownOpen ? <UserDropdown /> : null }
       </nav>

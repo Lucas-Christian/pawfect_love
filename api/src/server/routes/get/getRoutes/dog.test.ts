@@ -9,7 +9,10 @@ import { dogRoute } from "./dog";
 let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
 
 beforeAll(() => {
-  req = createMockedRequest(undefined, { dog_id: "1" });
+  req = createMockedRequest(undefined, { 
+    dog_id: "1",
+    authorization: process.env["AUTHORIZATION_KEY"] as string
+  });
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
