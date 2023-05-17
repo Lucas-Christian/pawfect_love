@@ -20,10 +20,7 @@ const dog = {
 const like = { like_id: 1, user_id: 1, dog_id: 1 };
 
 beforeAll(() => {
-  req = createMockedRequest(undefined, {
-    user_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  req = createMockedRequest({}, { user_id: "1" }, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

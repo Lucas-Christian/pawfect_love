@@ -3,17 +3,13 @@ import type { Dependencies } from "../../../../types/Dependencies";
 
 export async function adminRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   let userId = parseInt(req.params["user_id"]!);
-  console.log(userId)
   try {
     const admin = await db.findUnique("admin", {
       where: {
         user_id: userId
       }
     });
-    console.log(admin)
     if(admin) return res.json({ status: 409, message: "Admin já existe no banco de dados." });
-    console.log(admin)
-    console.log(userId)
 
     await db.create("admin", {
       data: {

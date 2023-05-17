@@ -11,16 +11,10 @@ let req: Partial<Request>, malformedReq: Partial<Request>, res: Partial<Response
 beforeAll(() => {
   req = createMockedRequest({
     name: "bartolomeu", image: "https://adawd/dawdd/imagem.png"
-  },
-  {
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  }, {}, {});
   malformedReq = createMockedRequest({
     name: "bartolomeu 2"
-  },
-  {
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  }, {}, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

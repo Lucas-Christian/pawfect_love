@@ -17,19 +17,9 @@ beforeAll(() => {
   req = createMockedRequest({
     name: "Auebo",
     email: "dog2@gmail.com"
-  }, 
-  { 
-    user_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
-  emptyBodyReq = createMockedRequest({}, { 
-    user_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string 
-  }),
-  identicalReq = createMockedRequest(user, { 
-    user_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string 
-  });
+  }, { user_id: "1" }, {});
+  emptyBodyReq = createMockedRequest({}, { user_id: "1" }, {}),
+  identicalReq = createMockedRequest(user, { user_id: "1" }, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

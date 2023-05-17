@@ -6,13 +6,12 @@ import { Request, Response } from "express";
 import { MockedDatabase } from "../../../mock/types/MockedDatabase";
 import { userRoute } from "./user";
 
-let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
+let req: Partial<Request>, emailReq: Partial<Request>, emptyReq: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
 
 beforeAll(() => {
-  req = createMockedRequest(undefined, {
-    user_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  req = createMockedRequest({}, { user_id: "1" }, {});
+  emailReq = createMockedRequest({}, {}, { email: "dog@gmail.com" });
+  emptyReq = createMockedRequest({}, {}, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
@@ -37,6 +36,28 @@ describe("Verifica se o método GET da rota user funciona corretamente", () => {
     expect(res.json).toHaveBeenCalledWith({
       status: 200,
       body: user,
+    });
+  });
+  test("É esperado que o user seja encontrado com sucesso (200)", async () => {
+    const user = {
+      user_id: 1,
+      name: "Paulinho",
+      email: "dog@gmail.com"
+    };
+    db.findUnique.mockReturnValueOnce(user).mockReturnValueOnce(null);
+
+    await userRoute(emailReq as any, res as any, { db: db } as any);
+
+    expect(res.json).toHaveBeenCalledWith({
+      status: 200,
+      body: user,
+    });
+  });
+  test("É esperado que não tenham sido fornecidos dados o suficiente para encontrar o usuário (400)", async () => {
+    await userRoute(emptyReq as any, res as any, { db: db } as any);
+    expect(res.json).toHaveBeenCalledWith({
+      status: 400,
+      message: "Você não forneceu um email ou id de usuário válido para realizar a busca.",
     });
   });
   test("É esperado que o usuário não seja encontrado (404)", async () => {

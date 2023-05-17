@@ -13,20 +13,14 @@ beforeAll(() => {
   req = createMockedRequest({
     name: "Paulinho",
     email: "dog@gmail.com"
-  },
-  {
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  }, {}, {});
   existentEmailReq = createMockedRequest({
     name: "cleiton",
     email: "dog@gmail.com"
-  },
-  {
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  }, {}, {});
   malformedReq = createMockedRequest({
     name: "Paulinho"
-  });
+  }, {}, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

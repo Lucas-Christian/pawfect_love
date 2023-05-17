@@ -7,12 +7,14 @@ type Body = {
   image?: string;
 } | null | undefined;
 
-type Params = {
-  authorization: string;
-} & Request["params"];
+type Headers = {
+  email?: string;
+  authorization?: string;
+}
 
-export const createMockedRequest = (body?: Body, params?: Params, data: MockedRequest = {}): MockedRequest => ({
+export const createMockedRequest = (body: Body | {}, params: Request["params"] | {}, headers: Headers | {}, data: MockedRequest = {}): MockedRequest => ({
   body: body,
   params: params,
+  headers: headers,
   ...data,
 });

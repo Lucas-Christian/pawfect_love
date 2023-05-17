@@ -6,14 +6,13 @@ import { Request, Response } from "express";
 import { MockedDatabase } from "../../../mock/types/MockedDatabase";
 import { likeRoute } from "./like";
 
-let req: Partial<Request>, malformedReq: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
+let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
 
 beforeAll(() => {
-  req = createMockedRequest(undefined, {
+  req = createMockedRequest({}, {
     user_id: "1",
-    dog_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+    dog_id: "1"
+  }, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();

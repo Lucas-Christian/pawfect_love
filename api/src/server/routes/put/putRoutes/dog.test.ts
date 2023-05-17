@@ -17,23 +17,12 @@ beforeAll(() => {
   req = createMockedRequest({
     name: "Auebo",
     image: "https://adaw/Naice.png"
-  }, 
-  { 
-    dog_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
-  emptyBodyReq = createMockedRequest({}, { 
-    dog_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string 
-  }),
+  }, { dog_id: "1" }, {});
+  emptyBodyReq = createMockedRequest({}, { dog_id: "1" }, {}),
   identicalReq = createMockedRequest({
     name: dog["name"],
     image: dog["image_url"]
-  }, 
-  { 
-    dog_id: "1",
-    authorization: process.env["AUTHORIZATION_KEY"] as string
-  });
+  }, { dog_id: "1" }, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
