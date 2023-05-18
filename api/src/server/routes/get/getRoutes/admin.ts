@@ -11,8 +11,7 @@ export async function adminRoute(req: Request, res: Response, { db }: Dependenci
         user_id: userId
       }
     });
-    console.log(userId);
-    console.log(user);
+
     if(user === null || !user) return res.json({ status: 404, message: "Admin não encontrado." });
     res.json({ status: 200, body: user });
   } catch(err) {

@@ -1,0 +1,24 @@
+.createDesktop {
+  display: none;
+}
+@media (min-width: 640px) {
+  .createMobile {
+    display: none;
+  }
+  .createDesktop {
+    background-color: #261C1A;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    flex-direction: row;
+    position: absolute;
+    cursor: pointer;
+    display: flex;
+    padding: 10px; 
+    width: 180px;
+    height: 60px;
+    bottom: 60px;
+    right: 70px;
+    gap: 10px;
+  }
+}

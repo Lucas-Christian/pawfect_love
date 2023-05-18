@@ -87,12 +87,12 @@ export class APIQueue {
         callback(jsonRes);
       }
   
-      if (this.queue.length > 0) {
+      if(this.queue.length > 0) {
         this.processQueue();
       }
     };
   
-    if (this.queue.length === 0) {
+    if(this.queue.length === 0) {
       this.queue.push(request);
       this.processQueue();
     } else {
@@ -101,4 +101,5 @@ export class APIQueue {
   }
   
 }
-  
+
+export const apiQueue = new APIQueue();

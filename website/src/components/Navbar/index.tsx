@@ -1,8 +1,9 @@
-import { HomeIcon, UserCircleIcon, PlusCircleIcon } from "@heroicons/react/24/outline";
+import { HomeIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { signIn, useSession } from "next-auth/react";
 import { UserDropdown } from "../UserDropdown";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { Create } from "../CreateButton";
 import Link from "next/link";
 import React from "react";
 
@@ -14,7 +15,8 @@ export function Navbar(): React.JSX.Element {
   function Home() {
     return (
       <Link href="/">
-        <HomeIcon className="icon" style={{ stroke: router["pathname"] === "/" ? "#6DC6DF" : "" }} />
+        <img src="/favicon.png" className="pawLogo" width="32" height="32" />
+        <HomeIcon className="icon homeIcon" style={{ stroke: router["pathname"] === "/" ? "#6DC6DF" : "" }} />
       </Link>
     );
   }
@@ -39,18 +41,10 @@ export function Navbar(): React.JSX.Element {
       )
     }
   
-    function CreateIcon(): React.JSX.Element {
-      return (
-        <Link href="/create">
-          <PlusCircleIcon className="icon" style={{ stroke: router["pathname"] === "/create" ? "#6DC6DF" : "" }} />
-        </Link>
-      );
-    }
-  
     return (
       <nav>
         <Home />
-        { session.isAdmin ? <CreateIcon /> : null }
+        { session.isAdmin ? <Create type="mobile" /> : null }
         <UserIcon />
         { userDropdownOpen ? <UserDropdown /> : null }
       </nav>

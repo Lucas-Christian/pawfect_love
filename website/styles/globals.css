@@ -35,6 +35,9 @@
 }
 
 body {
+  background: rgba(0, 0, 0, 0.2) url("/background.png");
+  background-repeat: repeat;
+  background-size: 88px 85px;
   background-color: var(--van_dyke);
   flex-direction: column;
   display: flex;
@@ -77,6 +80,9 @@ img {
   cursor: pointer;
   width: 32px;
 }
+.pawLogo {
+  display: none;
+}
 
 @media (min-width: 640px) {
   nav {
@@ -84,5 +90,11 @@ img {
     gap: 0;
     padding: 0 20px;
     justify-content: space-between;
+  }
+  .homeIcon {
+    display: none;
+  }
+  .pawLogo {
+    display: block;
   }
 }

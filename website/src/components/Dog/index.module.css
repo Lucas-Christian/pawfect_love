@@ -1,0 +1,25 @@
+.dogContainer {
+  background-color: #69564F;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 16px;
+  align-items: center;
+  display: flex;
+  height: 220px;
+  width: 250px;
+  gap: 12px;
+}
+.divBeforeDogImage {
+  width: 220px;
+  height: 132px;
+}
+.dogImage {
+  border-radius: 16px;
+  object-fit: cover;
+  width: 100%;
+  height: inherit;
+}
+.dogName {
+  font-weight: bold;
+  color: white;
+}

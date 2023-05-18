@@ -1,14 +1,16 @@
 import { useSession } from "next-auth/react";
+import { Layout } from "../components/Layout";
 
 export default function Create() {
   const { data: session, status } = useSession();
 
-  if(status === "authenticated" && session?.user?.email === "lucas.christian.programmer@gmail.com") {
+  if(session!.isAdmin !== true && status !== "authenticated") return <div>Não autorizado</div>;
+  if(status === "authenticated" && session.isAdmin) {
     return (
-      <div>Autorizado</div>
+      <Layout>
+        <div>Autorizado</div>
+      </Layout>
     );
   }
-  return (
-    <div>Não autorizado</div>
-  );
+  return <div>Loading</div>;
 }
