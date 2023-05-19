@@ -21,6 +21,8 @@ export function Navbar(): React.JSX.Element {
     );
   }
 
+  if(status === "loading") return <nav><Home /></nav>;
+
   if(status === "unauthenticated") {
     return (
       <nav>

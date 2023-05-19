@@ -1,9 +1,10 @@
-import { Res, apiQueue } from "./manipulateAPI";
+import type { APIQueue } from "./APIQueue";
+import type { Session } from "next-auth";
+import type { Res } from "../types/APIQueueTypes";
 import { createUser } from "./createUser";
-import { Session } from "next-auth";
 
 
-export function getUser(session: Session): Promise<Res<"/user">> {
+export function getUser(session: Session, apiQueue: APIQueue): Promise<Res<"/user">> {
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
       url: "/user",
@@ -11,8 +12,8 @@ export function getUser(session: Session): Promise<Res<"/user">> {
       reqHeaders: { email: session.user!.email! },
       callback: (res) => {
         if(res.status !== 200) {
-          createUser(session)
-            .then(() => getUser(session).then(resolve).catch(reject))
+          createUser(session, apiQueue)
+            .then(() => getUser(session, apiQueue).then(resolve).catch(reject))
             .catch(reject);
         } else {
           resolve(res);

@@ -1,14 +1,13 @@
 import { useSession } from "next-auth/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
-import { APIQueue } from "@/src/functions/manipulateAPI";
-import styles from "./index.module.css";
+import { APIQueue } from "@/src/functions/APIQueue";
 import { getUser } from "@/src/functions/getUser";
+import styles from "./index.module.css";
 
 type LikesProps = {
   dogId: number;
 }
-
 
 export function Likes({ dogId }: LikesProps) {
   const { data: session, status } = useSession();
@@ -17,7 +16,7 @@ export function Likes({ dogId }: LikesProps) {
   
   function Liked() {
     async function unlike() {
-      let { body: user } = await getUser(session!);
+      let { body: user } = await getUser(session!, apiQueue);
       apiQueue.enqueue({
         url: `/like/${user.user_id}/${dogId}`,
         method: "DELETE", 
@@ -35,7 +34,7 @@ export function Likes({ dogId }: LikesProps) {
   }
   function Unliked() {
     async function like() {
-      let { body: user } = await getUser(session!);
+      let { body: user } = await getUser(session!, apiQueue);
       apiQueue.enqueue({ 
         url: `/like/${user.user_id}/${dogId}`, 
         method: "POST",

@@ -1,7 +1,13 @@
 import { Likes } from "../Likes";
 import styles from "./index.module.css";
 
-export function Dog() {
+type DogProps = {
+  dogId: number;
+  name: string;
+  image_url: string;
+}
+
+export function Dog({ }: DogProps) {
   return (
     <div className={styles["dogContainer"]}>
       <p className={styles["dogName"]}>Biscoito</p>

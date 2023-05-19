@@ -1,7 +1,7 @@
-import { apiQueue } from "./manipulateAPI";
+import { APIQueue } from "./APIQueue";
 import { Session } from "next-auth";
 
-export function createUser(session: Session) {
+export function createUser(session: Session, apiQueue: APIQueue) {
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
       url: "/user",

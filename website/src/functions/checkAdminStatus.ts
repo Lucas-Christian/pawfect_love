@@ -1,9 +1,9 @@
+import { APIQueue } from "./APIQueue";
 import { getUser } from "./getUser";
-import { apiQueue } from "./manipulateAPI";
 import { Session } from "next-auth";
 
-export function checkAdminStatus(session: Session): Promise<boolean> {
-  return getUser(session).then(({ body: user }) => {
+export function checkAdminStatus(session: Session, apiQueue: APIQueue): Promise<boolean> {
+  return getUser(session, apiQueue).then(({ body: user }) => {
     if(session!.user!.email !== process.env["ADMIN_EMAIL"]) return false;
     return new Promise<boolean>((resolve) => {
       apiQueue.enqueue({ url: `/admin/${user.user_id}`, method: "GET", 

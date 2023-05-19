@@ -1,6 +1,9 @@
 import GoogleProvider from "next-auth/providers/google";
 import NextAuth, { Session } from "next-auth";
 import { checkAdminStatus } from "@/src/functions/checkAdminStatus";
+import { APIQueue } from "@/src/functions/APIQueue";
+
+const apiQueue = new APIQueue();
 
 export const authOptions = {
   providers: [
@@ -11,9 +14,9 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session }: { session: Session }) {
-      checkAdminStatus(session);
+      checkAdminStatus(session, apiQueue);
       if(session.user!.email === process.env["ADMIN_EMAIL"]) session.isAdmin = true;
-      return Promise.resolve(session);
+      return session;
     },
     secret: process.env["NEXTAUTH_SECRET"],
     pages: {

@@ -4,8 +4,8 @@ import { likeRoute } from "./like";
 import { dogRoute } from "./dog";
 
 export const getAllRoutes = {
-  "user": userRoute,
-  "dog": dogRoute,
-  "like": likeRoute,
-  "admin": adminRoute
+  "users": userRoute,
+  "dogs": dogRoute,
+  "likes": likeRoute,
+  "admins": adminRoute
 }

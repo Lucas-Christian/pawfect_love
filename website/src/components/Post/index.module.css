@@ -1,0 +1,11 @@
+.postButton {
+  background-color: #261C1A;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  padding: 10px; 
+  width: 180px;
+  height: 60px;
+}
