@@ -6,10 +6,16 @@ import { Request, Response } from "express";
 import { MockedDatabase } from "../../../mock/types/MockedDatabase";
 import { likeRoute } from "./like";
 
-let req: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
+let req: Partial<Request>, reqWithDogId: Partial<Request>, malformedReq: Partial<Request>, res: Partial<Response>, db: MockedDatabase, dbWithError: MockedDatabase;
 
 beforeAll(() => {
   req = createMockedRequest({}, {}, {});
+  reqWithDogId = createMockedRequest({}, {
+    dog_id: "2"
+  }, {});
+  malformedReq = createMockedRequest({}, {
+    dog_id: "aba"
+  }, {});
   res = createMockedResponse();
   db = createMockedDatabase();
   dbWithError = createMockedDatabase();
@@ -20,7 +26,7 @@ afterAll(() => {
   vi.clearAllMocks();
 });
 
-describe("Verifica se o método GET da rota user funciona corretamente", () => {
+describe("Verifica se o método GET da rota like funciona corretamente", () => {
   test("É esperado que os likes sejam encontrados com sucesso (200)", async () => {
     const likes = [{
       like_id: 1,
@@ -30,6 +36,21 @@ describe("Verifica se o método GET da rota user funciona corretamente", () => {
     db.findMany.mockReturnValueOnce(likes).mockReturnValueOnce(null);
 
     await likeRoute(req as any, res as any, { db: db } as any);
+
+    expect(res.json).toHaveBeenCalledWith({
+      status: 200,
+      body: likes,
+    });
+  });
+  test("É esperado que os likes sejam encontrados com sucesso (200)", async () => {
+    const likes = [{
+      like_id: 1,
+      user_id: 1,
+      dog_id: 1
+    }];
+    db.findMany.mockReturnValueOnce(likes).mockReturnValueOnce(null);
+
+    await likeRoute(reqWithDogId as any, res as any, { db: db } as any);
 
     expect(res.json).toHaveBeenCalledWith({
       status: 200,

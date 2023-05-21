@@ -9,8 +9,6 @@ export default function Create() {
 
   if(status === "loading") return <Layout><main><div style={{color: "white"}}>Loading...</div></main></Layout>;
 
-  console.log(session);
-
   if(status === "unauthenticated" || session!["isAdmin"] === null || session!["isAdmin"] === undefined) {
     router.push("/");
     return <Layout><main><div style={{color: "white"}}>Não autorizado</div></main></Layout>;
@@ -19,7 +17,7 @@ export default function Create() {
     return (
       <Layout>
         <main>
-
+      
           <Post />
         </main>
       </Layout>

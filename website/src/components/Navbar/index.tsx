@@ -16,7 +16,7 @@ export function Navbar(): React.JSX.Element {
     return (
       <Link href="/">
         <img src="/favicon.png" className="pawLogo" width="32" height="32" />
-        <HomeIcon className="icon homeIcon" style={{ stroke: router["pathname"] === "/" ? "#6DC6DF" : "" }} />
+        <HomeIcon className="icon homeIcon" style={{ stroke: router["pathname"] === "/" ? "#6DC6DF" : undefined }} />
       </Link>
     );
   }

@@ -5,16 +5,17 @@ type DogProps = {
   dogId: number;
   name: string;
   image_url: string;
+  likes: number;
 }
 
-export function Dog({ }: DogProps) {
+export function Dog({ dogId, image_url, name, likes }: DogProps) {
   return (
     <div className={styles["dogContainer"]}>
-      <p className={styles["dogName"]}>Biscoito</p>
+      <p className={styles["dogName"]}>{name}</p>
       <div className={styles["divBeforeDogImage"]}>
-        <img src="/dogs/Biscoito.png" className={styles["dogImage"]} alt="Imagem do doguinho Biscoito" />
+        <img src={image_url} className={styles["dogImage"]} alt={`Imagem do doguinho ${name}`} />
       </div>
-      <Likes dogId={1} />
+      <Likes dogId={dogId} likes={likes} />
     </div>
   );
 }

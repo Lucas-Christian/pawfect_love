@@ -3,7 +3,7 @@ import type { Dependencies } from "../../../../types/Dependencies";
 
 export async function adminRoute(_req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   try {
-    let admin = await db.findMany("admin");
+    const admin = await db.findMany("admin");
     if(admin === null || !admin) return res.json({ status: 404, message: "Não existem admins no banco de dados." });
     res.json({ status: 200, body: admin });
   } catch(err) {

@@ -2,7 +2,7 @@ export type Url =
   "/users" | `/user/${number}` | "/user" |
   "/admins" | `/admin/${number}` |
   "/dogs" | `/dog/${number}` |
-  "/likes" | `/like/${number}/${number}` | `/like/${number}`;
+  "/likes" | `/likes/${number}`| `/like/${number}/${number}`;
 
 export type Method = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
@@ -12,7 +12,7 @@ export type Body<U extends Url> =
   undefined;
 
 export type User = { user_id: number; name: string; email: string; };
-export type Dog = { dog_id: number; name: string; image_url: string; };
+export type Dog = { dog_id: number; name: string; image_url: string; likes?: number };
 export type Like = { like_id: number; user_id: number; dog_id: number; };
 export type Admin = { admin_id: number; user_id: number; };
 
@@ -37,6 +37,7 @@ export type Res<U extends Url> =
   U extends "/dogs" ? { status: number; body: Dog[] } :
   U extends `/dog/${number}` ? { status: number; body: Dog } :
   U extends "/likes" ? { status: number; body: Like[] } :
+  U extends `/likes/${number}` ? { status: number; body: Like[] } :
   { status: number; body: Like };
 
 export type Req<U extends Url> = {

@@ -2,8 +2,8 @@ import { APIQueue } from "./APIQueue";
 import { getUser } from "./getUser";
 import { Session } from "next-auth";
 
-export function checkAdminStatus(session: Session, apiQueue: APIQueue): Promise<boolean> {
-  return getUser(session, apiQueue).then(({ body: user }) => {
+export async function checkAdminStatus(session: Session, apiQueue: APIQueue): Promise<boolean> {
+  return await getUser(session, apiQueue).then(({ body: user }) => {
     if(session!.user!.email !== process.env["ADMIN_EMAIL"]) return false;
     return new Promise<boolean>((resolve) => {
       apiQueue.enqueue({ url: `/admin/${user.user_id}`, method: "GET", 
