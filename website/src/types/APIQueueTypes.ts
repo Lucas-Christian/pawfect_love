@@ -1,7 +1,7 @@
 export type Url = 
   "/users" | `/user/${number}` | "/user" |
   "/admins" | `/admin/${number}` |
-  "/dogs" | `/dog/${number}` |
+  "/dogs" | `/dog/${number}` | "/dog" |
   "/likes" | `/likes/${number}`| `/like/${number}/${number}`;
 
 export type Method = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
