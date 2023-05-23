@@ -1,32 +1,62 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { mkdir, writeFile } from "fs/promises";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { createReadStream } from "fs";
+import { mkdir, copyFile } from "fs/promises";
 import { join } from "path";
+import formidable from "formidable";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  if(req.method !== "POST") {
-    res.json({ status: 405, message: "Método não permitido!" });
-    return;
+  if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {
+    return res.json({ status: 401, message: "Não autorizado." });
   }
-
-  const file = req.body;
-  const fileName = req.headers["content-disposition"]?.split("filename=")[1]?.replace(/"/g, "");
-
-  if(!file) {
-    return res.json({ status: 400, message: "Nenhum arquivo enviado." });
-  }
-  if(!fileName) {
-    return res.json({ status: 400, message: "Nenhum nome de arquivo foi fornecido." });
-  }
-
-  const uploadDir = join(process.cwd(), "public", "dogs");
-  const filePath = join(uploadDir, fileName);
+  if(req.method !== "POST") return res.json({ status: 405, message: "Método não permitido!" });
 
   try {
-    await mkdir(uploadDir, { recursive: true });
-    await writeFile(filePath, file);
+    const form = formidable({ multiples: true });
+    const uploadDir = join(process.cwd(), "public", "dogs");
 
-    res.json({ status: 200, message: filePath });
-  } catch (error) {
+    await new Promise<void>((resolve, reject) => {
+      form.parse(req, async (error, fields, files) => {
+        if(error) {
+          console.error(error);
+          return reject({ status: 500, message: "Erro ao fazer upload do arquivo." });
+        }
+
+        const name = fields["name"]![0];
+        const file = (files as any)["file"]![0] as formidable.File;
+
+        if(!name || !file) return reject({ status: 400, message: "Nome e arquivo são campos obrigatórios." });
+        
+        const filePath = join(uploadDir, name as string);
+        await mkdir(uploadDir, { recursive: true });
+
+        const readStream = createReadStream(file.filepath);
+        const writeStream = copyFile(file.filepath, filePath);
+
+        writeStream
+          .then(() => {
+            resolve();
+            res.json({ status: 200, message: filePath });
+          })
+          .catch((error) => {
+            console.error(error);
+            reject({ status: 500, message: "Erro ao fazer upload do arquivo." });
+          });
+
+        readStream.on("error", (error) => {
+          console.error(error);
+          reject({ status: 500, message: "Erro ao fazer upload do arquivo." });
+        });
+      });
+    });
+
+    res.end();
+  } catch(error: any) {
     console.error(error);
     res.json({ status: 500, message: "Erro ao fazer upload do arquivo." });
   }

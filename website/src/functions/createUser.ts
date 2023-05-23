@@ -1,14 +1,13 @@
 import { APIQueue } from "./APIQueue";
-import { Session } from "next-auth";
 
-export function createUser(session: Session, apiQueue: APIQueue) {
+export function createUser(user: { name: string; email: string; }, apiQueue: APIQueue): Promise<number> {
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
       url: "/user",
       method: "POST",
       reqBody: {
-        name: session.user!.name!,
-        email: session.user!.email!
+        name: user.name,
+        email: user.email
       },
       callback: ({ status }) => {
         if(status !== 201 && status !== 409) {

@@ -11,7 +11,7 @@ export async function patchRoute(req: Request, res: Response, { db }: Dependenci
     const routeName = req.originalUrl.split("/")[1];
 
     let route = patchRoutes[routeName as keyof typeof patchRoutes];
-    route(req, res, { db });
+    return await route(req, res, { db });
   } catch(err) {
     console.log(err);
     return res.json({ status: 500, message: "Erro", error: err });

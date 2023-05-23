@@ -21,10 +21,11 @@ export function TextInput({ textValue, setTextValue, ...props }: TextInputProps)
   return (
     <input
       type="text"
-      {...props}
       className={styles["input"]}
       onChange={handleTextInputChange}
       value={textValue}
+      autoComplete="off"
+      {...props}
     />
   );
 }

@@ -10,8 +10,7 @@ export async function getAllRoute(req: Request, res: Response, { db }: Dependenc
 
     const routeName = req.originalUrl.split("/")[1];
     let route = getAllRoutes[routeName as keyof typeof getAllRoutes];
-    route(req, res, { db });
-    
+    return await route(req, res, { db });
   } catch(err) {
     console.log(err);
     res.json({ status: 500, message: "Erro", error: err });

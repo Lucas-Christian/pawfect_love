@@ -30,17 +30,14 @@ export class Server {
       Server.instance[method](path, async (req: Request, res: Response) => {
         try {
           await handler(req, res, { db: Server.db });
-        } catch (error) {
+        } catch(error) {
           console.error(error);
           res.json({ status: 500, message: "Erro interno do servidor." });
         }
       });
     });
   }
-  public get instance(): Application {
-    if(!Server.instance) Server.instance = new Server().instance;
-    return Server.instance;
-  }
+
   public start(): void {
     console.log("> [api] Inicializando a API...");
     Server.instance.listen(process.env["PORT"] as string, () =>{

@@ -1,18 +1,16 @@
 import type { APIQueue } from "./APIQueue";
 import type { Res } from "../types/APIQueueTypes";
-import { createUser } from "./createUser";
+import { createAdminUser } from "./createAdminUser";
 
-
-export function getUser(user: { name: string; email: string; }, apiQueue: APIQueue): Promise<Res<"/user">> {
+export function getAdminUser(userId: number, apiQueue: APIQueue): Promise<Res<`/admin/${number}`>> {
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
-      url: "/user",
+      url: `/admin/${userId}`,
       method: "GET",
-      reqHeaders: { email: user.email },
       callback: (res) => {
         if(res.status !== 200) {
-          createUser(user, apiQueue)
-            .then(() => getUser(user, apiQueue).then(resolve).catch(reject))
+          createAdminUser(userId, apiQueue)
+            .then(() => getAdminUser(userId, apiQueue).then(resolve).catch(reject))
             .catch(reject);
         } else {
           resolve(res);

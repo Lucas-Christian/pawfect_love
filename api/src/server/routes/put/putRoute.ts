@@ -11,7 +11,7 @@ export async function putRoute(req: Request, res: Response, { db }: Dependencies
     const routeName = req.originalUrl.split("/")[1];
 
     let route = putRoutes[routeName as keyof typeof putRoutes];
-    route(req, res, { db });
+    return await route(req, res, { db });
   } catch(err) {
     console.log(err);
     return res.json({ status: 500, message: "Erro", error: err });

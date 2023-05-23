@@ -1,27 +1,48 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Layout } from "../components/Layout";
-import { Post } from "../components/Post";
+import { CreatePost } from "../components/CreatePost";
 
 export default function Create() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  if(status === "loading") return <Layout><main><div style={{color: "white"}}>Loading...</div></main></Layout>;
-
-  if(status === "unauthenticated" || session!["isAdmin"] === null || session!["isAdmin"] === undefined) {
-    router.push("/");
-    return <Layout><main><div style={{color: "white"}}>Não autorizado</div></main></Layout>;
-  }
-  if(session!.isAdmin && status === "authenticated") {
+  if (status === "loading") {
     return (
       <Layout>
         <main>
-      
-          <Post />
+          <div style={{ color: "white" }}>Loading...</div>
         </main>
       </Layout>
     );
   }
-  return <Layout><main><div style={{color: "white"}}>Loading...</div></main></Layout>;
+
+  if (status === "unauthenticated" || session?.isAdmin === null || session?.isAdmin === undefined) {
+    router.push("/");
+    return (
+      <Layout>
+        <main>
+          <div style={{ color: "white" }}>Não autorizado</div>
+        </main>
+      </Layout>
+    );
+  }
+
+  if (session?.isAdmin && status === "authenticated") {
+    return (
+      <Layout>
+        <main>
+          <CreatePost />
+        </main>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout>
+      <main>
+        <div style={{ color: "white" }}>Loading...</div>
+      </main>
+    </Layout>
+  );
 }

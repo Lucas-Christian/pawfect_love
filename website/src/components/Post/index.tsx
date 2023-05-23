@@ -1,48 +1,55 @@
+import { MouseEvent, useState } from "react";
 import { FileInput } from "../FileInput";
 import { TextInput } from "../TextInput";
-// import { APIQueue } from "@/src/functions/APIQueue";
-import { MouseEvent, useState } from "react";
 import styles from "./index.module.css";
 
-// const apiQueue = new APIQueue();
-
 export function Post() {
-  const [ textValue, setTextValue ] = useState("");
-  const [ file, setFile ] = useState<File | null>(null);
+  const [textValue, setTextValue] = useState("");
+  const [file, setFile] = useState<File | null>(null);
   const isOkToPost = textValue !== "" && file !== null;
+  const [isProcessing, setIsProcessing] = useState(false);
 
   async function post(event: MouseEvent) {
     event.preventDefault();
-    if (!isOkToPost) return;
+    if(!isOkToPost || isProcessing) return;
+
+    setIsProcessing(true);
 
     try {
-      const reader = new FileReader();
-      reader.onload = async () => {
-        const fileData = reader.result as ArrayBuffer;
-        const blob = new Blob([fileData], { type: file!.type });
+      const formData = new FormData();
+      formData.append("name", file!.name);
+      formData.append("file", file!);
 
-        const response = await fetch("/api/upload", {
-          method: "POST",
-          headers: {
-            "Content-Type": file!.type,
-            "Content-Disposition": `attachment; filename="${file!.name}"`,
-          },
-          body: blob,
-        });
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: {
+          Authorization: process.env["AUTHORIZATION_KEY"]!
+        },
+        body: formData,
+      });
 
-        if(!response.ok) {
-          throw new Error("Erro ao enviar o arquivo para o servidor.");
-        }
+      if(!response.ok) throw new Error("Erro ao enviar o arquivo para o servidor.");
 
-        const { message: filePath } = await response.json();
-
-        console.log(filePath);
-      };
-
-      reader.readAsArrayBuffer(file as Blob);
+      const { message: filePath } = await response.json();
+      
+      await fetch("/api/createDog", {
+        method: "POST",
+        headers: {
+          Authorization: process.env["AUTHORIZATION_KEY"]!,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: textValue,
+          image: filePath.replace(/^.*public/, "")
+        })
+      });
     } catch (error) {
       console.error(error);
       alert("Erro ao enviar o arquivo para o servidor.");
+    } finally {
+      setTextValue("");
+      setFile(null);
+      setIsProcessing(false);
     }
   }
 
@@ -52,8 +59,9 @@ export function Post() {
         <TextInput textValue={textValue} setTextValue={setTextValue} id="textInput" />
         <FileInput file={file} setFile={setFile} />
       </div>
-      <button 
-        className={`${styles["postButton"]} ${ !isOkToPost ? styles["buttonTransparent"] : "" }`}
+      <button
+        className={`${styles["postButton"]} ${!isOkToPost ? styles["buttonTransparent"] : ""}`}
+        disabled={!isOkToPost || isProcessing}
         onClick={post}
       >
         <p style={{ color: "#FFFFFF" }}>Postar</p>

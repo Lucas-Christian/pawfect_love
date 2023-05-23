@@ -10,7 +10,7 @@ export class Database {
     this.prisma = new PrismaClient();
   }
   public get instance(): Database {
-    if (!Database.instance) {
+    if(!Database.instance) {
       Database.instance = new Database();
     }
     return Database.instance;
