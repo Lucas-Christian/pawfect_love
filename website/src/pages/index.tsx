@@ -1,22 +1,19 @@
 import type { Dog as DogData } from "../types/APIQueueTypes";
 import { useSession } from "next-auth/react";
-import { APIQueue } from "../functions/APIQueue";
 import { getDogs } from "../functions/getDogs";
 import { Create } from "../components/CreateButton";
 import { Layout } from "../components/Layout";
 import { Dog } from "../components/Dog";
 
-const apiQueue = new APIQueue();
-
 export async function getStaticProps() {
-  let dogs = await getDogs(apiQueue);
+  let dogs = await getDogs();
   
   if(!dogs) dogs = [];
 
   return {
     props: {
       dogs: dogs,
-      revalidate: 300
+      revalidate: 30
     }
   }
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { APIQueue } from "@/src/functions/APIQueue";
 import styles from "./index.module.css";
 
 type LikesProps = {
@@ -30,49 +29,55 @@ async function getLikeAPI(userId: string, dogId: string) {
   return await likeRes.json();
 }
 
+async function getLikesAPI(dogId: string) {
+  const likesRes = await fetch(`/api/getLikes?dog_id=${dogId}`, {
+    method: "GET",
+    headers: {
+      Authorization: process.env["AUTHORIZATION_KEY"]!
+    }
+  });
+  return await likesRes.json();
+}
 
 export function Likes({ dogId }: LikesProps) {
   const { data: session, status } = useSession();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
-  const apiQueue = new APIQueue();
 
   useEffect(() => {
+    async function fetchLikes() {
+      const { body: likeArray } = await getLikesAPI(dogId.toString());
+      if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
+    }
     if(status === "authenticated") {
-      async function fetchData() {
+      async function fetchIsLiked() {
         const { body: user } = await getUserAPI(session!.user!.name!, session!.user!.email!);
-
         const { status: likeStatus } = await getLikeAPI(user.user_id, dogId.toString());
         likeStatus === 200 ? setIsLiked(true) : setIsLiked(false);
-
-        const likesRes = await fetch(`/api/getLikes?dog_id=${dogId}`, {
-          method: "GET",
-          headers: {
-            Authorization: process.env["AUTHORIZATION_KEY"]!
-          }
-        });
-        const { body: likeArray } = await likesRes.json();
-        if(likeArray && likeArray.length > 0) setLikes(likeArray.length);
       }
-
-      fetchData();
+      fetchIsLiked();
     }
-  }, [dogId, session, status, apiQueue]);
+    fetchLikes();
+  }, [dogId, session, status]);
 
   async function unlike() {
     if(!isLiked) return;
-    // const { body: user } = await getUser({ name: session!.user!.name!, email: session!.user!.email! }, apiQueue);
-    // apiQueue.enqueue({
-    //   url: `/like/${user.user_id}/${dogId}`,
-    //   method: "DELETE",
-    //   callback: ({ status }) => {
-    //     if(status === 204) {
-    //       setIsLiked(false);
-    //     }
-    //   }
-    // });
-    console.log("Função unlike")
+    const { body: user } = await getUserAPI(session!.user!.name!, session!.user!.email!);
+    const { status: likeStatus } = await getLikeAPI(user.user_id, dogId.toString());
+    if(likeStatus !== 200) return;
 
+    const response = await fetch(`/api/deleteLike?userId=${user.user_id}&dogId=${dogId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: process.env["AUTHORIZATION_KEY"]!
+      }
+    });
+
+    const { status } = await response.json();
+    const { body: likeArray } = await getLikesAPI(dogId.toString());
+
+    if(status === 204) setIsLiked(false);
+    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
   }
 
   async function like() {
@@ -93,7 +98,10 @@ export function Likes({ dogId }: LikesProps) {
       })
     });
     const { status } = await response.json();
+    const { body: likeArray } = await getLikesAPI(dogId.toString());
+
     if(status === 201 || status === 409) setIsLiked(true);
+    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
   }
 
   if(status === "loading" || status === "unauthenticated") {

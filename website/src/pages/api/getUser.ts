@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { APIQueue } from "@/src/functions/APIQueue";
 import { getUser } from "@/src/functions/getUser";
-
-const apiQueue = new APIQueue();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {
@@ -14,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const userEmail = req.headers["email"] as string;
     const userName = req.headers["name"] as string;
 
-    const response = await getUser({ name: userName, email: userEmail }, apiQueue);
+    const response = await getUser({ name: userName, email: userEmail });
     res.json(response);
   } catch (error: any) {
     console.error(error);

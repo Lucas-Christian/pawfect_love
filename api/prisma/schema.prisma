@@ -23,7 +23,7 @@ model Admin {
   admin_id  Int      @id @default(autoincrement())
   
   user_id   Int      @unique
-  user      User     @relation(fields: [user_id], references: [user_id])
+  user      User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 }
 
 model Dog {
@@ -38,10 +38,10 @@ model Like {
   like_id   Int      @id @default(autoincrement())
   
   user_id   Int
-  user      User     @relation(fields: [user_id], references: [user_id])
+  user      User     @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
 
   dog_id    Int
-  dog       Dog      @relation(fields: [dog_id], references: [dog_id])
+  dog       Dog      @relation(fields: [dog_id], references: [dog_id], onDelete: Cascade)
 
   @@unique([user_id, dog_id])
 }

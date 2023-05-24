@@ -1,7 +1,9 @@
 import type { Like } from "../types/APIQueueTypes";
-import type { APIQueue } from "./APIQueue";
+import { APIQueue } from "./APIQueue";
 
-export async function getLikes(dogId: number, apiQueue: APIQueue): Promise<Like[] | undefined> {
+export async function getLikes(dogId: string): Promise<Like[] | undefined> {
+  const apiQueue = new APIQueue();
+
   return await new Promise<Like[] | undefined>((resolve) => {
     apiQueue.enqueue({
       url: `/likes/${dogId}`,

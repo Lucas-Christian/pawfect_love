@@ -3,6 +3,7 @@ import type { Dependencies } from "../../../../types/Dependencies";
 
 export async function likeRoute(req: Request, res: Response, { db }: Dependencies): Promise<void | Response> {
   let dogId = parseInt(req.params["dog_id"]!), userId = parseInt(req.params["user_id"]!);
+
   try {
     const existingUser = await db.findUnique("user", {
       where: {

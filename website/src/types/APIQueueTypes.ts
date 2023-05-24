@@ -1,8 +1,8 @@
 export type Url =
-  "/users" | `/user/${number}` | "/user" |
-  "/admins" | `/admin/${number}` |
-  "/dogs" | `/dog/${number}` | "/dog" |
-  "/likes" | `/likes/${number}` | `/like/${number}/${number}`;
+  "/users" | `/user/${string}` | "/user" |
+  "/admins" | `/admin/${string}` |
+  "/dogs" | `/dog/${string}` | "/dog" |
+  "/likes" | `/likes/${string}` | `/like/${string}/${string}`;
 
 export type Method = "GET" | "POST" | "DELETE" | "PATCH" | "PUT";
 
@@ -39,12 +39,12 @@ export type Req<U extends Url> = {
 
 export type Res<U extends Url> =
   U extends "/users" ? { status: number; body: User[]; } :
-  U extends `/user/${number}` ? { status: number; body: User; } :
+  U extends `/user/${string}` ? { status: number; body: User; } :
   U extends "/user" ? { status: number; body: User; } :
   U extends "/admins" ? { status: number; body: Admin[] } :
-  U extends `/admin/${number}` ? { status: number; body: Admin } :
+  U extends `/admin/${string}` ? { status: number; body: Admin } :
   U extends "/dogs" ? { status: number; body: Dog[] } :
-  U extends `/dog/${number}` ? { status: number; body: Dog } :
+  U extends `/dog/${string}` ? { status: number; body: Dog } :
   U extends "/likes" ? { status: number; body: Like[] } :
-  U extends `/likes/${number}` ? { status: number; body: Like[] } :
+  U extends `/likes/${string}` ? { status: number; body: Like[] } :
   { status: number; body: Like };

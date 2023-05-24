@@ -1,6 +1,8 @@
 import { APIQueue } from "./APIQueue";
 
-export function createUser(user: { name: string; email: string; }, apiQueue: APIQueue): Promise<number> {
+export function createUser(user: { name: string; email: string; }): Promise<number> {
+  const apiQueue = new APIQueue();
+
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
       url: "/user",
@@ -10,10 +12,10 @@ export function createUser(user: { name: string; email: string; }, apiQueue: API
         email: user.email
       },
       callback: ({ status }) => {
-        if(status !== 201 && status !== 409) {
-          reject(status);
+        if(status === 201 || status === 409) {
+          resolve(status);
         } else {
-          resolve(201);
+          reject(status);
         }
       }
     });

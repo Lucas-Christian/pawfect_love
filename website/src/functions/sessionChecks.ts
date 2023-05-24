@@ -1,10 +1,8 @@
-import type { APIQueue } from "./APIQueue";
+import type { Session } from "next-auth";
 import { getAdminUser } from "./getAdminUser";
 import { getUser } from "./getUser";
-import { Session } from "next-auth";
 
-export async function sessionChecks(session: Session, apiQueue: APIQueue): Promise<void> {
-  const { body: { user_id } } = await getUser({ name: session.user!.name!, email: session.user!.email!}, apiQueue);
-  if(session.user!.email !== process.env["ADMIN_EMAIL"]) return;
-  await getAdminUser(user_id, apiQueue);
+export async function sessionChecks(session: Session): Promise<void> {
+  const { body: { user_id } } = await getUser({ name: session.user!.name!, email: session.user!.email!});
+  if(session.user!.email === process.env["ADMIN_EMAIL"]) await getAdminUser(user_id.toString());
 }

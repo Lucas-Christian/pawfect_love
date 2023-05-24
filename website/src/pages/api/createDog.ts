@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { APIQueue } from "@/src/functions/APIQueue";
 
-const apiQueue = new APIQueue();
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {
     return res.json({ status: 401, message: "Não autorizado." });
   }
   if(req.method !== "POST") return res.json({ status: 405, message: "Método não permitido!" });
+  
+  const apiQueue = new APIQueue();
 
   try {
     await new Promise<{ status: number, body: any }>((resolve) => {

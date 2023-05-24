@@ -1,15 +1,17 @@
-import type { APIQueue } from "./APIQueue";
+import { APIQueue } from "./APIQueue";
 
-export function createAdminUser(userId: number, apiQueue: APIQueue): Promise<number> {
+export function createAdminUser(userId: string): Promise<number> {
+  const apiQueue = new APIQueue();
+
   return new Promise((resolve, reject) => {
     apiQueue.enqueue({
       url: `/admin/${userId}`,
       method: "POST",
       callback: ({ status }) => {
-        if(status !== 201 && status !== 409) {
-          reject(status);
-        } else {
+        if(status === 201 || status === 409) {
           resolve(status);
+        } else {
+          reject(status);
         }
       },
     });

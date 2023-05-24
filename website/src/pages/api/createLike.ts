@@ -1,15 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { APIQueue } from "@/src/functions/APIQueue";
 
-const apiQueue = new APIQueue();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {
     return res.json({ status: 401, message: "Não autorizado." });
   }
   if(req.method !== "POST") return res.json({ status: 405, message: "Método não permitido!" });
-  let userId = req.body.userId, dogId = req.body.dogId;
-
+  let userId = req.body["userId"], dogId = req.body["dogId"];
+  
+  const apiQueue = new APIQueue();
+  
   try {
     const promiseRes = await new Promise<{ status: number, body: any }>((resolve) => {
       apiQueue.enqueue({

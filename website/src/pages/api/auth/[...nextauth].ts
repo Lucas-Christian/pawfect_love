@@ -1,9 +1,6 @@
 import GoogleProvider from "next-auth/providers/google";
 import NextAuth, { Session } from "next-auth";
 import { sessionChecks } from "@/src/functions/sessionChecks";
-import { APIQueue } from "@/src/functions/APIQueue";
-
-const apiQueue = new APIQueue();
 
 export const authOptions = {
   providers: [
@@ -14,7 +11,7 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session }: { session: Session }) {
-      sessionChecks(session, apiQueue);
+      sessionChecks(session);
       if(session.user!.email === process.env["ADMIN_EMAIL"]) session.isAdmin = true;
       return session;
     },
