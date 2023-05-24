@@ -4,7 +4,7 @@ import { HeartIcon } from "@heroicons/react/24/outline";
 import styles from "./index.module.css";
 
 type LikesProps = {
-  dogId: number;
+  dogId: string;
 };
 
 async function getUserAPI(name: string, email: string) {

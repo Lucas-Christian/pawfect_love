@@ -1,0 +1,36 @@
+.dropdownContainer {
+  position: relative;
+}
+
+.dropdownIcon {
+  width: 24px;
+  stroke: #FFFFFF;
+  fill: #FFFFFF;
+  cursor: pointer;
+}
+
+.dropdownContent {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background-color: #FFFFFF;
+  border: 2px solid #000000;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  z-index: 1;
+}
+
+.dropdownContentItem {
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+}
+
+.dropdownContentIcon {
+  width: 24px; 
+  stroke: #000000;
+}

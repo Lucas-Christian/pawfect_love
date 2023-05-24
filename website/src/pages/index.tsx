@@ -13,7 +13,7 @@ export async function getStaticProps() {
   return {
     props: {
       dogs: dogs,
-      revalidate: 30
+      revalidate: 60
     }
   }
 }
@@ -27,7 +27,7 @@ export default function Home({ dogs }: { dogs: DogData[] | [] }) {
           {
             dogs.length === 0 
             ? <p style={{color: "white"}}>Não temos cachorros no banco de dados.</p>
-            : dogs.map(({ dog_id, name, image_url }) => <Dog key={`dogKey:${dog_id}${name}`} dogId={dog_id} name={name} image_url={image_url} /> )
+            : dogs.map(({ dog_id, name, image_url }) => <Dog key={`dogKey:${dog_id}${name}`} dogId={dog_id.toString()} name={name} image_url={image_url} /> )
           }
         </>
         {

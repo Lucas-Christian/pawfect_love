@@ -4,22 +4,40 @@
   flex-direction: column;
   border-radius: 16px;
   align-items: center;
+  position: relative;
   display: flex;
   height: 220px;
   width: 250px;
   gap: 12px;
 }
+
+.infoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.dogName {
+  font-weight: bold;
+  color: white;
+}
+
+.editContainer {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+}
+
 .divBeforeDogImage {
   width: 220px;
   height: 132px;
 }
+
 .dogImage {
   border-radius: 16px;
   object-fit: cover;
   width: 100%;
   height: inherit;
 }
-.dogName {
-  font-weight: bold;
-  color: white;
-}
+
