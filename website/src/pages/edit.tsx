@@ -1,7 +1,7 @@
-import { Post } from "../components/Post";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { Layout } from "../components/Layout";
+import { Post } from "../components/Post";
 
 export default function Create() {
   const { data: session, status } = useSession();

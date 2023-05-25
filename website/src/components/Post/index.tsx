@@ -3,9 +3,11 @@ import { FileInput } from "../FileInput";
 import { TextInput } from "../TextInput";
 import styles from "./index.module.css";
 
-export function Post() {
-  const [textValue, setTextValue] = useState("");
-  const [file, setFile] = useState<File | null>(null);
+type PostProps = { fileProp?: File | null; textValueProp?: string };
+
+export function Post({ fileProp, textValueProp }: PostProps = { fileProp: null, textValueProp: ""}) {
+  const [textValue, setTextValue] = useState(textValueProp as string);
+  const [file, setFile] = useState<File | null>(fileProp as File | null);
   const isOkToPost = textValue !== "" && file !== null;
   const [isProcessing, setIsProcessing] = useState(false);
 

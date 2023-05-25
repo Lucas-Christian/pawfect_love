@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import styles from "./index.module.css";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 
-export function Options({ dogId }: { dogId: string; }) {
+export function Options({ dogId, handleSetDogs }: { dogId: string; handleSetDogs: (dogId: number) => void; }) {
   const { status, data: session } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -14,12 +14,13 @@ export function Options({ dogId }: { dogId: string; }) {
   };
 
   async function deleteDogAPI() {
-    await fetch(`/api/deleteDog?dogId=${dogId}`, {
+    const response = await fetch(`/api/deleteDog?dogId=${dogId}`, {
       headers: {
         Authorization: process.env["AUTHORIZATION_KEY"]!
       },
       method: "DELETE"
     });
+    if(response.status === 204) handleSetDogs(parseInt(dogId));
   }
 
   if (status === "authenticated" && session!.isAdmin) {

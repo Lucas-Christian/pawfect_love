@@ -6,15 +6,16 @@ type DogProps = {
   dogId: string;
   name: string;
   image_url: string;
+  handleSetDogs: (dogId: number) => void;
 }
 
-export function Dog({ dogId, image_url, name }: DogProps) {
+export function Dog({ dogId, image_url, name, handleSetDogs }: DogProps) {
   return (
     <div className={styles["dogContainer"]}>
       <div className={styles["infoContainer"]}>
         <p className={styles["dogName"]}>{name}</p>
         <div className={styles["editContainer"]}>
-          <Options dogId={dogId} />
+          <Options dogId={dogId} handleSetDogs={handleSetDogs} />
         </div>
       </div>
       <div className={styles["divBeforeDogImage"]}>
