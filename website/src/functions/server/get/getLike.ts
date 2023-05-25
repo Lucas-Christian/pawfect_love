@@ -1,4 +1,4 @@
-import { APIQueue } from "./APIQueue";
+import { APIQueue } from "../APIQueue";
 
 export async function getLike(userId: string, dogId: string): Promise<boolean | undefined> {
   const apiQueue = new APIQueue();

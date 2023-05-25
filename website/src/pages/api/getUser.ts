@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getUser } from "@/src/functions/getUser";
+import { getUser } from "@/src/functions/server/get/getUser";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {

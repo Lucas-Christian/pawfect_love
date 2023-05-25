@@ -1,5 +1,5 @@
-import type { Like } from "../types/APIQueueTypes";
-import { APIQueue } from "./APIQueue";
+import type { Like } from "../../../types/APIQueueTypes";
+import { APIQueue } from "../APIQueue";
 
 export async function getLikes(dogId: string): Promise<Like[] | undefined> {
   const apiQueue = new APIQueue();

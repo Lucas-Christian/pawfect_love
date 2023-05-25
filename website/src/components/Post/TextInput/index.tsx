@@ -12,10 +12,6 @@ export function TextInput({ textValue, setTextValue, ...props }: TextInputProps)
     const filteredValue = value.replace(/[^a-zA-Z]/g, "");
 
     setTextValue(filteredValue);
-
-    if(props.onChange) {
-      props.onChange(event);
-    }
   };
 
   return (

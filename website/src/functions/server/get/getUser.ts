@@ -1,6 +1,6 @@
-import type { Res } from "../types/APIQueueTypes";
-import { createUser } from "./createUser";
-import { APIQueue } from "./APIQueue";
+import type { Res } from "../../../types/APIQueueTypes";
+import { createUser } from "../create/createUser";
+import { APIQueue } from "../APIQueue";
 
 export function getUser(user: { name: string; email: string; }): Promise<Res<"/user">> {
   const apiQueue = new APIQueue();

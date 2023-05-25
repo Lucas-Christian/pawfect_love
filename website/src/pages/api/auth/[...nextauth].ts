@@ -1,6 +1,6 @@
 import GoogleProvider from "next-auth/providers/google";
 import NextAuth, { Session } from "next-auth";
-import { sessionChecks } from "@/src/functions/sessionChecks";
+import { sessionChecks } from "@/src/functions/server/sessionChecks";
 
 export const authOptions = {
   providers: [

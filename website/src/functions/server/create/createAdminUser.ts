@@ -1,4 +1,4 @@
-import { APIQueue } from "./APIQueue";
+import { APIQueue } from "../APIQueue";
 
 export function createAdminUser(userId: string): Promise<number> {
   const apiQueue = new APIQueue();

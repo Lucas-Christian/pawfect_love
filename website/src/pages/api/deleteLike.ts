@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { APIQueue } from "@/src/functions/APIQueue";
+import { APIQueue } from "@/src/functions/server/APIQueue";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {

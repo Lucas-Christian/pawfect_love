@@ -7,7 +7,7 @@ function MobileCreate() {
   const router = useRouter();
 
   return (
-    <Link href="/create" className={styles["createMobile"]}>
+    <Link href="/post" className={styles["createMobile"]}>
       <PlusCircleIcon className="icon" style={{ stroke: router["pathname"] === "/create" ? "#6DC6DF" : "" }} />
     </Link> 
   );
@@ -15,7 +15,7 @@ function MobileCreate() {
 
 function DesktopCreate() {
   return (
-    <Link href="/create">
+    <Link href="/post">
       <button className={styles["createDesktop"]}>
         <PlusCircleIcon className="icon" />
         <p style={{ color: "#FFFFFF" }}>Nova postagem</p>
@@ -29,5 +29,6 @@ export function Create({ type }: { type: "mobile" | "desktop" }): React.JSX.Elem
     "mobile": () => <MobileCreate />,
     "desktop": () => <DesktopCreate />
   }
-  return types[type]();
+  const CreateType = types[type];
+  return <CreateType />;
 }

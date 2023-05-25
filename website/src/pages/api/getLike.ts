@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getLike } from "@/src/functions/getLike";
+import { getLike } from "@/src/functions/server/get/getLike";
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -8,10 +8,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   if(req.method !== "GET") return res.json({ status: 405, message: "Método não permitido!" });
   
-  const userId = req.query["user_id"] as string;
-  const dogId = req.query["dog_id"] as string;
-
   try {
+    const userId = req.query["user_id"] as string;
+    const dogId = req.query["dog_id"] as string;
+    
     const like = await getLike(userId, dogId);
     if(!like) return res.json({ status: 404, message: "Like não encontrado." });
     res.json({ status: 200, message: "Like encontrado." });

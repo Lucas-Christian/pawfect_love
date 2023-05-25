@@ -107,8 +107,8 @@ export function Likes({ dogId }: LikesProps) {
   if(status === "loading" || status === "unauthenticated") {
     return (
       <div className={styles["likes"]}>
-        <HeartIcon style={{ width: "24px", stroke: "#71767B" }} />
-        <p style={{ color: "#71767B" }}>{likes}</p>
+        <HeartIcon className={styles["unauthenticatedUnlikedHeartIcon"]} />
+        <p className={styles["unauthenticatedUnlikedHeartText"]}>{likes}</p>
       </div>
     );
   }
@@ -118,13 +118,13 @@ export function Likes({ dogId }: LikesProps) {
       <div style={{ cursor: "pointer" }}>
         {isLiked ? (
           <div className={styles["likes"]} onClick={unlike}>
-            <HeartIcon style={{ width: "24px", stroke: "#BB2E2E", fill: "#BB2E2E" }} />
-            <p style={{ color: "#BB2E2E" }}>{likes}</p>
+            <HeartIcon className={styles["likedHeartIcon"]} />
+            <p className={styles["likedHeartText"]}>{likes}</p>
           </div>
         ) : (
           <div className={styles["likes"]} onClick={like}>
-            <HeartIcon style={{ width: "24px", stroke: "#BB2E2E" }} />
-            <p style={{ color: "#BB2E2E" }}>{likes}</p>
+            <HeartIcon className={styles["unlikedHeartIcon"]} />
+            <p className={styles["unlikedHeartText"]}>{likes}</p>
           </div>
         )}
       </div>

@@ -1,5 +1,5 @@
-import type { Dog } from "../types/APIQueueTypes";
-import { APIQueue } from "./APIQueue";
+import type { Dog } from "../../../types/APIQueueTypes";
+import { APIQueue } from "../APIQueue";
 
 export async function getDogs(): Promise<Dog[] | undefined> {
   const apiQueue = new APIQueue();

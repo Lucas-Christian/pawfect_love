@@ -1,35 +1,28 @@
 import type { Dog as DogData } from "../types/APIQueueTypes";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { getDogs } from "../functions/client/get/getDogs";
 import { Create } from "../components/CreateButton";
 import { Layout } from "../components/Layout";
 import { Dog } from "../components/Dog";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   const [dogs, setDogs] = useState<DogData[] | []>([]);
   const { data: session } = useSession();
 
   async function fetchData() {
-    const response = await fetch("/api/getDogs", {
-      headers: {
-        Authorization: process.env["AUTHORIZATION_KEY"]!
-      },
-      method: "GET"
-    });
-    if(response.status === 200) {
-      const { body: initialDogs } = await response.json();
-      setDogs(initialDogs);
-    }
+    const { body: initialDogs } = await getDogs();
+    if(initialDogs && initialDogs.length > 0) setDogs(initialDogs);
+  }
+  
+  function handleSetDogs(dogId: number): void {
+    const filteredDogs = (state: DogData[]) => state.filter((dog) => dog.dog_id !== dogId);
+    setDogs((state) => filteredDogs(state))
   }
 
   useEffect(() => {
     fetchData();
   }, [dogs]);
-
-  function handleSetDogs(dogId: number): void {
-    const filteredDogs = (state: DogData[]) => state.filter((dog) => dog.dog_id !== dogId);
-    setDogs((state) => filteredDogs(state))
-  }
 
   return (
     <Layout>
@@ -48,10 +41,10 @@ export default function Home() {
               )
           }
         </>
-        {
-          session?.isAdmin ? <Create type="desktop" /> : null
-        }
       </main>
+      {
+        session?.isAdmin ? <Create type="desktop" /> : null
+      }
     </Layout>
   )
 }

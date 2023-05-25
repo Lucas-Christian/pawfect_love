@@ -1,6 +1,6 @@
-import type { Res } from "../types/APIQueueTypes";
-import { createAdminUser } from "./createAdminUser";
-import { APIQueue } from "./APIQueue";
+import type { Res } from "../../../types/APIQueueTypes";
+import { createAdminUser } from "../create/createAdminUser";
+import { APIQueue } from "../APIQueue";
 
 export function getAdminUser(userId: string): Promise<Res<`/admin/${string}`>> {
   const apiQueue = new APIQueue();

@@ -1,0 +1,62 @@
+.likes {
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  display: flex;
+  gap: 5px;
+}
+
+.likedHeartIcon {
+  width: 24px; 
+  stroke: #BB2E2E;
+  fill: #BB2E2E;
+}
+
+.unlikedHeartIcon {
+  width: 24px; 
+  stroke: #BB2E2E;
+}
+
+.likedHeartText {
+  color: #BB2E2E;
+}
+
+.unlikedHeartText {
+  color: #BB2E2E;
+}
+
+.unauthenticatedUnlikedHeartIcon {
+  width: 24px;
+  stroke: #71767B;
+}
+.unauthenticatedUnlikedHeartText {
+  color: #71767B;
+}
+
+@media (min-width: 640px) {
+
+}
+@media (min-width: 768px) {
+
+}
+@media (min-width: 1024px) {
+  .likedHeartIcon {
+    width: 36px;
+  }
+  .unlikedHeartIcon {
+    width: 36px;
+  }
+  .unauthenticatedUnlikedHeartIcon {
+    width: 36px;
+  }
+
+  .likedHeartText {
+    font-size: 27.65px;
+  }  
+  .unlikedHeartText {
+    font-size: 27.65px;
+  }
+  .unauthenticatedUnlikedHeartText {
+    font-size: 27.65px;
+  }
+}

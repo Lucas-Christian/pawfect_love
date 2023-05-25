@@ -1,4 +1,4 @@
-import { APIQueue } from "./APIQueue";
+import { APIQueue } from "../APIQueue";
 
 export function createUser(user: { name: string; email: string; }): Promise<number> {
   const apiQueue = new APIQueue();

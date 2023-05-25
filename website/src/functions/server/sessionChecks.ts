@@ -1,6 +1,6 @@
 import type { Session } from "next-auth";
-import { getAdminUser } from "./getAdminUser";
-import { getUser } from "./getUser";
+import { getAdminUser } from "./get/getAdminUser";
+import { getUser } from "./get/getUser";
 
 export async function sessionChecks(session: Session): Promise<void> {
   const { body: { user_id } } = await getUser({ name: session.user!.name!, email: session.user!.email!});

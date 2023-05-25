@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getDogs } from "@/src/functions/server/get/getDogs";
+import { readImage } from "@/src/functions/server/readImage";
+import { getDog } from "@/src/functions/server/get/getDog";
+import { join } from "path";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if(req.headers.authorization !== process.env["AUTHORIZATION_KEY"]) {
@@ -7,10 +9,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
   if(req.method !== "GET") return res.json({ status: 405, message: "Método não permitido!" });
 
+  
   try {
-    const dogs = await getDogs();
-    if(!dogs) return res.json({ status: 404, message: "Dogs não encontrados." });
-    res.json({ status: 200, body: dogs });
+    const dogId = req.query["dogId"];
+
+    const dog = await getDog(dogId as string);
+    if(!dog) return res.json({ status: 404, message: "Cachorro não encontrado." });
+
+    const filePath = join(process.cwd(), "public", dog!.image_url);
+    const image = await readImage(filePath);
+    res.json({ status: 200, body: image });
   } catch (error: any) {
     console.error(error);
     res.json({ status: 500, message: "Erro ao obter os dogs." });

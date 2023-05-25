@@ -32,7 +32,7 @@ export function Options({ dogId, handleSetDogs }: { dogId: string; handleSetDogs
         />
         {showDropdown && (
           <div className={styles["dropdownContent"]}>
-            <Link href="/edit">
+            <Link href={`/edit?dogId=${dogId}`} style={{color: "black"}}>
               <div className={styles["dropdownContentItem"]}>
                 <PencilIcon className={styles["dropdownContentIcon"]} />
                 <p>Editar</p>

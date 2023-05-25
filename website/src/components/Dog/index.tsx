@@ -1,5 +1,5 @@
-import { Options } from "../Options";
-import { Likes } from "../Likes";
+import { Options } from "./Options";
+import { Likes } from "./Likes";
 import styles from "./index.module.css";
 
 type DogProps = {

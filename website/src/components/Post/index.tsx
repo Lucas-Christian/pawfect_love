@@ -1,50 +1,28 @@
 import { MouseEvent, useState } from "react";
-import { FileInput } from "../FileInput";
-import { TextInput } from "../TextInput";
+import { uploadFile } from "@/src/functions/client/uploadFile";
+import { FileInput } from "./FileInput";
+import { TextInput } from "./TextInput";
+import { createDog } from "@/src/functions/client/create/createDog";
 import styles from "./index.module.css";
 
-type PostProps = { fileProp?: File | null; textValueProp?: string };
+type PostProps = { 
+  fileProp?: File | null; 
+  textValueProp?: string 
+};
 
-export function Post({ fileProp, textValueProp }: PostProps = { fileProp: null, textValueProp: ""}) {
-  const [textValue, setTextValue] = useState(textValueProp as string);
-  const [file, setFile] = useState<File | null>(fileProp as File | null);
+export function Post({ fileProp, textValueProp }: PostProps) {
+  const [textValue, setTextValue] = useState(textValueProp ? textValueProp : "");
+  const [file, setFile] = useState<File | null>(fileProp ? fileProp : null);
   const isOkToPost = textValue !== "" && file !== null;
   const [isProcessing, setIsProcessing] = useState(false);
 
   async function post(event: MouseEvent) {
     event.preventDefault();
     if(!isOkToPost || isProcessing) return;
-
     setIsProcessing(true);
-
     try {
-      const formData = new FormData();
-      formData.append("name", file!.name);
-      formData.append("file", file!);
-
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          Authorization: process.env["AUTHORIZATION_KEY"]!
-        },
-        body: formData,
-      });
-
-      if(!response.ok) throw new Error("Erro ao enviar o arquivo para o servidor.");
-
-      const { message: filePath } = await response.json();
-      
-      await fetch("/api/createDog", {
-        method: "POST",
-        headers: {
-          Authorization: process.env["AUTHORIZATION_KEY"]!,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: textValue,
-          image: filePath.replace(/^.*public/, "")
-        })
-      });
+      const filePath = await uploadFile(file);
+      await createDog(textValue, filePath);
     } catch (error) {
       console.error(error);
       alert("Erro ao enviar o arquivo para o servidor.");
