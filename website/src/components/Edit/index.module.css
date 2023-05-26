@@ -1,0 +1,33 @@
+.editContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.editForm {
+  background-color: #69564F;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 16px;
+  display: flex;
+  padding: 30px;
+  width: 250px;
+  gap: 20px;
+}
+.editButton {
+  background-color: #261C1A;
+  justify-content: center;
+  align-items: center;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  padding: 10px; 
+  width: 180px;
+  height: 60px;
+}
+.buttonTransparent {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

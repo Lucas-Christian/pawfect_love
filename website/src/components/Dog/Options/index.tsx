@@ -21,6 +21,7 @@ export function Options({ dogId, handleSetDogs }: { dogId: string; handleSetDogs
       method: "DELETE"
     });
     if(response.status === 204) handleSetDogs(parseInt(dogId));
+    alert("Doguinho deletado com sucesso!");
   }
 
   if (status === "authenticated" && session!.isAdmin) {
@@ -32,7 +33,7 @@ export function Options({ dogId, handleSetDogs }: { dogId: string; handleSetDogs
         />
         {showDropdown && (
           <div className={styles["dropdownContent"]}>
-            <Link href={`/edit?dogId=${dogId}`} style={{color: "black"}}>
+            <Link href={`/update?dogId=${dogId}`} style={{color: "black"}}>
               <div className={styles["dropdownContentItem"]}>
                 <PencilIcon className={styles["dropdownContentIcon"]} />
                 <p>Editar</p>

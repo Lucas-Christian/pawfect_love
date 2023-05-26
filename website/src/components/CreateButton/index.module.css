@@ -11,7 +11,7 @@
     align-items: center;
     border-radius: 16px;
     flex-direction: row;
-    position: absolute;
+    position: fixed;
     cursor: pointer;
     display: flex;
     padding: 10px; 

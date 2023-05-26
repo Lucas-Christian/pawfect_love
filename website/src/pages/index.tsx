@@ -2,7 +2,7 @@ import type { Dog as DogData } from "../types/APIQueueTypes";
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { getDogs } from "../functions/client/get/getDogs";
-import { Create } from "../components/CreateButton";
+import { DesktopCreate } from "../components/CreateButton";
 import { Layout } from "../components/Layout";
 import { Dog } from "../components/Dog";
 
@@ -43,7 +43,7 @@ export default function Home() {
         </>
       </main>
       {
-        session?.isAdmin ? <Create type="desktop" /> : null
+        session?.isAdmin ? <DesktopCreate /> : null
       }
     </Layout>
   )

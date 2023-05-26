@@ -1,107 +1,68 @@
+import type { Like } from "@/src/types/APIQueueTypes";
 import { useEffect, useState } from "react";
+import { createLike } from "@/src/functions/client/create/createLike";
 import { useSession } from "next-auth/react";
+import { deleteLike } from "@/src/functions/client/delete/deleteLike";
 import { HeartIcon } from "@heroicons/react/24/outline";
+import { getLikes } from "@/src/functions/client/get/getLikes";
+import { getUser } from "@/src/functions/client/get/getUser";
+import { getLike } from "@/src/functions/client/get/getLike";
 import styles from "./index.module.css";
 
 type LikesProps = {
   dogId: string;
 };
 
-async function getUserAPI(name: string, email: string) {
-  const userRes = await fetch("/api/getUser", {
-    method: "GET",
-    headers: {
-      Authorization: process.env["AUTHORIZATION_KEY"]!,
-      name: name,
-      email: email
-    } as any
-  });
-  return await userRes.json();
-}
-
-async function getLikeAPI(userId: string, dogId: string) {
-  const likeRes = await fetch(`/api/getLike?user_id=${userId}&dog_id=${dogId}`, {
-    method: "GET",
-    headers: {
-      Authorization: process.env["AUTHORIZATION_KEY"]!
-    }
-  });
-  return await likeRes.json();
-}
-
-async function getLikesAPI(dogId: string) {
-  const likesRes = await fetch(`/api/getLikes?dog_id=${dogId}`, {
-    method: "GET",
-    headers: {
-      Authorization: process.env["AUTHORIZATION_KEY"]!
-    }
-  });
-  return await likesRes.json();
-}
-
 export function Likes({ dogId }: LikesProps) {
   const { data: session, status } = useSession();
   const [isLiked, setIsLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
+  async function fetchLikes() {
+    const { body: likeArray } = await getLikes(dogId.toString());
+    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
+  }
+  async function fetchIsLiked() {
+    const { body: user } = await getUser(session!.user!.name!, session!.user!.email!);
+    const { status: likeStatus } = await getLike(user.user_id, dogId.toString());
+    likeStatus === 200 ? setIsLiked(true) : setIsLiked(false);
+  }
+
   useEffect(() => {
-    async function fetchLikes() {
-      const { body: likeArray } = await getLikesAPI(dogId.toString());
-      if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
-    }
     if(status === "authenticated") {
-      async function fetchIsLiked() {
-        const { body: user } = await getUserAPI(session!.user!.name!, session!.user!.email!);
-        const { status: likeStatus } = await getLikeAPI(user.user_id, dogId.toString());
-        likeStatus === 200 ? setIsLiked(true) : setIsLiked(false);
-      }
       fetchIsLiked();
     }
     fetchLikes();
   }, [dogId, session, status]);
 
+  function setLikesQuantity(likeArray: Like[]) {
+    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
+  }
+
   async function unlike() {
     if(!isLiked) return;
-    const { body: user } = await getUserAPI(session!.user!.name!, session!.user!.email!);
-    const { status: likeStatus } = await getLikeAPI(user.user_id, dogId.toString());
+    const { body: user } = await getUser(session!.user!.name!, session!.user!.email!);
+    const { status: likeStatus } = await getLike(user.user_id, dogId.toString());
     if(likeStatus !== 200) return;
 
-    const response = await fetch(`/api/deleteLike?userId=${user.user_id}&dogId=${dogId}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: process.env["AUTHORIZATION_KEY"]!
-      }
-    });
-
-    const { status } = await response.json();
-    const { body: likeArray } = await getLikesAPI(dogId.toString());
+    const { status } = await deleteLike(user.user_id, dogId);
+    const { body: likeArray } = await getLikes(dogId.toString());
 
     if(status === 204) setIsLiked(false);
-    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
+    setLikesQuantity(likeArray);
   }
 
   async function like() {
     if(isLiked) return;
-    const { body: user } = await getUserAPI(session!.user!.name!, session!.user!.email!);
-    const { status: likeStatus } = await getLikeAPI(user.user_id, dogId.toString());
+    const { body: user } = await getUser(session!.user!.name!, session!.user!.email!);
+    const { status: likeStatus } = await getLike(user.user_id, dogId.toString());
     if(likeStatus === 200) return;
     
-    const response = await fetch("/api/createLike", {
-      method: "POST",
-      headers: {
-        Authorization: process.env["AUTHORIZATION_KEY"]!,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        userId: user.user_id,
-        dogId: dogId
-      })
-    });
-    const { status } = await response.json();
-    const { body: likeArray } = await getLikesAPI(dogId.toString());
+    const { status } = await createLike(user.user_id, dogId);
+    const { body: likeArray } = await getLikes(dogId.toString());
 
     if(status === 201 || status === 409) setIsLiked(true);
-    if(likeArray && likeArray instanceof Array) setLikes(likeArray.length);
+    setLikesQuantity(likeArray);
   }
 
   if(status === "loading" || status === "unauthenticated") {
