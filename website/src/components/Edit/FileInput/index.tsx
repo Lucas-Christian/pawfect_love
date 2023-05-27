@@ -1,50 +1,36 @@
-import { InputHTMLAttributes, Dispatch, SetStateAction, useRef, useState, useEffect } from "react";
-import React, { ChangeEvent } from "react";
+import { InputHTMLAttributes, Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import styles from "./index.module.css";
 
 type InputProps = {
   file: File | null;
   setFile: Dispatch<SetStateAction<File | null>>;
+  type: "POST" | "UPDATE";
 } & InputHTMLAttributes<HTMLInputElement>;
 
-export function FileInput({ file, setFile, ...props }: InputProps) {
+export function FileInput({ file, setFile, type, ...props }: InputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (file) {
-      setIsExpanded(true);
-
-      const reader = new FileReader();
-
-      reader.onloadend = () => {
-        setPreviewUrl(reader.result as string);
-      };
-
-      reader.readAsDataURL(file);
-    } else {
-      setIsExpanded(false);
-      setPreviewUrl(null);
-    }
-  }, [file]);
+  const [isExpanded, setIsExpanded] = useState(type === "UPDATE" && file !== null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   function handleFileChange(event: ChangeEvent<HTMLInputElement>) {
     const selectedFile = event.target.files?.[0];
 
-    if (selectedFile) {
-      if (isValidFileType(selectedFile)) {
-        setFile(selectedFile);
-      } else {
-        setFile(null);
-      }
+    if (selectedFile && isValidFileType()) {
+      setFile(selectedFile);
+      setIsExpanded(true);
+      const url = URL.createObjectURL(selectedFile);
+      setImageUrl(url);
     } else {
       setFile(null);
+      setIsExpanded(false);
+      event.target.value = "";
+      setImageUrl(null);
     }
 
-    function isValidFileType(file: File): boolean {
+    function isValidFileType(): boolean {
       const acceptedFileTypes = ["image/png", "image/jpeg"];
-      return acceptedFileTypes.includes(file.type);
+      return acceptedFileTypes.includes(selectedFile!.type);
     }
   }
 
@@ -54,28 +40,46 @@ export function FileInput({ file, setFile, ...props }: InputProps) {
     }
   }
 
+  useEffect(() => {
+    if (type === "UPDATE" && file !== null) {
+      setIsExpanded(true);
+      const url = URL.createObjectURL(file);
+      setImageUrl(url);
+    }
+  }, [type, file]);
+
   return (
     <div className={styles["inputContainer"]}>
       <input
         type="file"
         id="file-input"
         accept="image/png, image/jpeg"
-        style={{ display: "none" }}
         ref={fileInputRef}
+        className={styles["fileInput"]}
         onChange={handleFileChange}
         {...props}
       />
-      <button className={styles["fileButton"]} onClick={handleChooseFile} style={{ color: !file ? "rgba(0, 0, 0, 0.5)" : undefined }}>
+      <button
+        className={styles["fileButton"]}
+        onClick={handleChooseFile}
+        style={{ color: !file ? "rgba(0, 0, 0, 0.5)" : undefined }}
+      >
         {file ? `${file.name}` : "Escolher imagem"}
       </button>
-      {file && previewUrl && (
+      {file && imageUrl && (
         <div
-          className={`${styles["previewContainer"]} ${isExpanded ? styles["expanded"] : ""}`}
+          className={`${styles["previewContainer"]} ${
+            isExpanded ? styles["expanded"] : ""
+          }`}
         >
           <span className={styles["previewMessage"]}>Visualize o doguinho:</span>
-          <div className={`${styles["imageWrapper"]} ${isExpanded ? styles["showPreview"] : ""}`}>
+          <div
+            className={`${styles["imageWrapper"]} ${
+              isExpanded ? styles["showPreview"] : ""
+            }`}
+          >
             <img
-              src={previewUrl}
+              src={imageUrl}
               alt="Preview"
               className={styles["previewImage"]}
             />
