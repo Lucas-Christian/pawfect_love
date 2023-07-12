@@ -63,7 +63,7 @@ const isOkToEdit =
     <div className={styles["editContainer"]}>
       <div className={styles["editForm"]}>
         <TextInput textValue={textValue} setTextValue={setTextValue} id="textInput" />
-        <FileInput file={file} setFile={setFile} />
+        <FileInput file={file} setFile={setFile} type="UPDATE" />
       </div>
       <button
         className={`${styles["editButton"]} ${!isOkToEdit ? styles["buttonTransparent"] : ""}`}
